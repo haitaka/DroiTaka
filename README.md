@@ -1,4 +1,4 @@
-## R. Danny
+## DroiTaka
 
 A personal bot that runs on Discord.
 
@@ -16,44 +16,6 @@ First is a credentials.json file with the credentials:
 {
     "email": "myemail@gmail.com",
     "password": "mypassword"
-}
-```
-
-Second is a splatoon.json file with your Nintendo Network credentials and Splatoon-related data.
-
-```js
-{
-    "username": "nnid",
-    "password": "nnid password",
-    "maps": [
-        "Urchin Underpass",
-        ...
-    ],
-    "abilities": [
-        "Bomb Range Up",
-        ...
-    ],
-    "weapons": [
-        {
-            "special": "Kraken",
-            "sub": "Burst Bomb",
-            "name": "L-3 Nozzlenose D"
-        },
-        ...
-    ],
-    "brands": [
-        {
-            "nerfed": null,
-            "buffed": null,
-            "name": "Famitsu"
-        },
-        {
-            "nerfed": "Ink Recovery Up",
-            "buffed": "Ink Saver (Sub)",
-            "name": "Firefin"
-        },
-        ...
-    ]
 }
 ```
 
