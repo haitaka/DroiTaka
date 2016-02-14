@@ -42,8 +42,9 @@ class Radio:
     async def join(self, *, channel : discord.Channel = None):
         """Join voice channel.
         """
-        if channel is None or channel != discord.ChannelType.voice:
+        if channel is None or channel.type is not discord.ChannelType.voice:
             await self.bot.say('Cannot find a voice channel by that name.')
+            return
         await self.bot.join_voice_channel(channel)
         
     @commands.command()
