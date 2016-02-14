@@ -10,37 +10,20 @@ class RNG:
 
     @commands.group(pass_context=True)
     async def random(self, ctx):
-        """Displays a random thing you request."""
+        """Генератор случайностей."""
         if ctx.invoked_subcommand is None:
             await self.bot.say('Incorrect random subcommand passed.')
-
-    @random.command(pass_context=True)
-    async def tag(self, ctx):
-        """Displays a random tag.
-
-        A tag showing up in this does not get its usage count increased.
-        """
-        tags = self.bot.get_cog('Tags')
-        if tags is None:
-            await self.bot.say('Tags cog is not loaded.')
-            return
-
-        db = tags.get_possible_tags(ctx.message.server)
-        name = rng.sample(list(db), 1)[0]
-        await self.bot.say('Random tag found: {}\n{}'.format(name, db[name]))
-        del tags
         
     @random.command()
     async def number(self, minimum=0, maximum=100):
-        """Displays a random number within an optional range.
+        """Выбрать случайное число в заданном диапазоне.
 
-        The minimum must be smaller than the maximum and the maximum number
-        accepted is 1000.
+        Минимум должен быть меньше максимума, а максимум — меньше 1000.
         """
 
         maximum = min(maximum, 1000)
         if minimum >= maximum:
-            await self.bot.say('Maximum is smaller than minimum.')
+            await self.bot.say('Максимум меньше минимума.')
             return
 
         await self.bot.say(rng.randint(minimum, maximum))
@@ -55,16 +38,20 @@ class RNG:
         ])
         await self.bot.say(lenny)
 
-    @commands.command()
-    async def choose(self, *choices):
-        """Chooses between multiple choices.
+    @commands.command(aliases=['выбери', 'вибери'])
+    async def choose(self, choices : str):
+        """Есть два стула...
 
-        To denote multiple choices, you should use double quotes.
+        Варианты должны быть разделены с помощью `or` или `или`
         """
-        if len(choices) < 2:
-            await self.bot.say('Not enough choices to pick from.')
+        choices_list = list()
+        for choice in choices.split('or'):
+            choices_list += choice.split('или')
+            
+        if len(choices_list) < 2:
+            await self.bot.say('Шо то хуйня, шо это хуйня.')
         else:
-            await self.bot.say(rng.choice(choices))
+            await self.bot.say(rng.choice(choices_list))
 
 def setup(bot):
     bot.add_cog(RNG(bot))
