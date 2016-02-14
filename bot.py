@@ -4,6 +4,7 @@ from cogs.utils import checks
 import datetime, re
 import json, asyncio
 import copy
+from .cogs.utils.api.pycopy import Copy
 
 description = """
 Hello! I am a bot written by Haitaka to provide some nice utilities.
@@ -168,4 +169,5 @@ def load_credentials():
 
 if __name__ == '__main__':
     credentials = load_credentials()
-    bot.run(credentials['email'], credentials['password'])
+    bot.pycopy = Copy(credentials['copy_login'], credentials['copy_passwd'])
+    bot.run(credentials['login'], credentials['passwd'])
