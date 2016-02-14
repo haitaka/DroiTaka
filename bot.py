@@ -6,7 +6,7 @@ import json, asyncio
 import copy
 
 description = """
-Hello! I am a bot written by Danny to provide some nice utilities.
+Hello! I am a bot written by Haitaka to provide some nice utilities.
 """
 
 formatter = commands.HelpFormatter(show_check_failure=True)
