@@ -2,7 +2,6 @@ from .utils import config, checks, formats
 import discord
 from discord.ext import commands
 import discord.utils
-from .utils.api.pycopy import Copy
 import random, json, asyncio
 from urllib.parse import unquote
 
@@ -20,13 +19,10 @@ class Radio:
         self.play_next_song = asyncio.Event()
         self.current_song = None
         copy_creds = self.load_copy_creds()
-        self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
+        #self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
+        self.songs_dir = 'radio/'
         self.songs = []
         self.update_song_list()
-
-    def load_copy_creds(self):
-        with open('copy_creds.json') as f:
-            return json.load(f)
             
     @property
     def is_playing(self):
@@ -37,7 +33,7 @@ class Radio:
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
-        self.songs = self.copycom.list_files('radio/')
+        self.songs = self.bot.pycopy.list_files(self.songs_dir)
     
     
     @commands.command()
@@ -101,10 +97,10 @@ class Radio:
             self.play_next_song.clear()
             self.current = await self.q.get()
             self.player = self.bot.voice.create_ffmpeg_player(
-                self.copycom.direct_link('radio/' + self.current),
+                self.bot.pycopy.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song,
                 #options="-loglevel debug -report",
-                headers = dict(self.copycom.session.headers))
+                headers = dict(self.bot.pycopy.session.headers))
             self.stopped = False
             self.player.start()
             song_name = unquote(self.current.split('/')[-1])
