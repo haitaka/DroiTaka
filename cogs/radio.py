@@ -97,7 +97,7 @@ class Radio:
                 return
             
         while True:
-            if not selfbot.is_voice_connected():
+            if not self.bot.is_voice_connected():
                 await self.join(channel=ctx.message.author.voice_channel).invoke(ctx)
                 continue
     
