@@ -44,15 +44,15 @@ class Radio:
         """Join voice channel.
         """
         if channel is None or channel.type is not discord.ChannelType.voice:
-            await self.bot.say('Cannot find a voice channel by that name.')
+            await self.bot.say('Cannot find a voice channel by that name. {0}'.format(channel.type))
             return
         await self.bot.join_voice_channel(channel)
         
-    @commands.command()
+    @commands.command(pass_context=True)
     async def leave(self):
         """Leave voice channel.
         """
-        await self.stop().invoke(ctx)
+        await ctx.invoke(self.stop)
         await self.bot.voice.disconnect()
         
     @commands.command()
@@ -91,7 +91,7 @@ class Radio:
         """
         if self.player is not None:
             if not self.is_playing():
-                await self.resume().invoke(ctx)
+                await ctx.invoke(self.resume)
                 return
             else:
                 await self.bot.say('Already playing a song')
@@ -99,7 +99,7 @@ class Radio:
             
         while True:
             if not self.bot.is_voice_connected():
-                await self.join(channel=ctx.message.author.voice_channel).invoke(ctx)
+                await ctx.invoke(self.join, channel=ctx.message.author.voice_channel)
                 continue
     
             if self.q.empty():
