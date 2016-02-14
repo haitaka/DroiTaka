@@ -2,7 +2,7 @@ from .utils import config, checks, formats
 import discord
 from discord.ext import commands
 import discord.utils
-import .utils.api.pycopy as pycopy
+from .utils.api.pycopy import Copy
 import random, json
 
 class Radio:
@@ -16,7 +16,7 @@ class Radio:
         self.play_next_song = asyncio.Event()
         self.current_song = None
         copy_creds = self.load_copy_creds()
-        self.copycom = pycopy.Copy(copy_creds['login'], copy_creds['passwd'])
+        self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
         self.songs = []
         self.update_song_list()
         if not discord.opus.is_loaded():
