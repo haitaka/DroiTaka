@@ -36,7 +36,7 @@ class Meta:
     @commands.command()
     async def hello(self):
         """Displays my intro message."""
-        await self.bot.say('Hello! I\'m a robot! I am currently **version 3.0.0**. Danny made me.')
+        await self.bot.say('Hello! I\'m a robot! I am currently **version 0.1**. Haitaka made me.')
 
 
     @commands.command(pass_context=True)
@@ -98,7 +98,7 @@ class Meta:
             ('User ID', member.id),
             ('Joined', member.joined_at),
             ('Roles', ', '.join(roles)),
-            ('Servers', '{} shared'.format(shared)),
+            #('Servers', '{} shared'.format(shared)),
             ('Channel', channel.name),
             ('Voice Channel', voice),
             ('Channel ID', channel.id),
@@ -215,23 +215,22 @@ class Meta:
         """Tells you information about the bot itself."""
         revision = os.popen(r'git show -s HEAD --format="%s (%cr)"').read().strip()
         result = ['**About Me:**']
-        result.append('- Author: Danny (Discord ID: 80088516616269824)')
+        result.append('- Author: Haitaka (Based on Danny\'s RoboDanny)')
         result.append('- Library: discord.py (Python)')
-        result.append('- Latest Change: {}'.format(revision))
         result.append('- Uptime: {}'.format(self.get_bot_uptime()))
         result.append('- Servers: {}'.format(len(self.bot.servers)))
         result.append('- Commands Run: {}'.format(self.bot.commands_executed))
         # statistics
-        total_members = sum(len(s.members) for s in self.bot.servers)
-        total_online  = sum(1 for m in self.bot.get_all_members() if m.status != discord.Status.offline)
-        unique_members = set(self.bot.get_all_members())
-        unique_online = sum(1 for m in unique_members if m.status != discord.Status.offline)
-        channel_types = Counter(c.type for c in self.bot.get_all_channels())
-        voice = channel_types[discord.ChannelType.voice]
-        text = channel_types[discord.ChannelType.text]
-        result.append('- Total Members: {} ({} online)'.format(total_members, total_online))
-        result.append('- Unique Members: {} ({} online)'.format(len(unique_members), unique_online))
-        result.append('- {} text channels, {} voice channels'.format(text, voice))
+        #total_members = sum(len(s.members) for s in self.bot.servers)
+        #total_online  = sum(1 for m in self.bot.get_all_members() if m.status != discord.Status.offline)
+        #unique_members = set(self.bot.get_all_members())
+        #unique_online = sum(1 for m in unique_members if m.status != discord.Status.offline)
+        #channel_types = Counter(c.type for c in self.bot.get_all_channels())
+        #voice = channel_types[discord.ChannelType.voice]
+        #text = channel_types[discord.ChannelType.text]
+        #result.append('- Total Members: {} ({} online)'.format(total_members, total_online))
+        #result.append('- Unique Members: {} ({} online)'.format(len(unique_members), unique_online))
+        #result.append('- {} text channels, {} voice channels'.format(text, voice))
         await self.bot.say('\n'.join(result))
 
     @commands.command(rest_is_raw=True, hidden=True)
