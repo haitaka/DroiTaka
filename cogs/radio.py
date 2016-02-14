@@ -10,6 +10,9 @@ class Radio:
 
     def __init__(self, bot):
         self.bot = bot
+        if not discord.opus.is_loaded():
+            discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
+            
         self.player = None
         self.stopped = True
         self.q = asyncio.Queue()
@@ -19,8 +22,6 @@ class Radio:
         self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
         self.songs = []
         self.update_song_list()
-        if not discord.opus.is_loaded():
-            discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
 
     def load_copy_creds(self):
         with open('copy_creds.json') as f:
@@ -35,7 +36,7 @@ class Radio:
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
-        self.files = self.copycom.list_files('radio/')
+        self.songs = self.copycom.list_files('radio/')
     
     
     @commands.command()
