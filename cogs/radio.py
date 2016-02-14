@@ -67,14 +67,14 @@ class Radio:
     async def resume(self):
         """Resume playing.
         """
-        if self.player is not None and not self.is_playing():
+        if self.player is not None and not self.is_playing:
             self.player.resume()
             
     @commands.command()
     async def skip(self):
         """Skip song and play next.
         """
-        if self.player is not None and self.is_playing():
+        if self.player is not None and self.is_playing:
             self.player.stop()
             self.toggle_next_song()
             
@@ -82,7 +82,7 @@ class Radio:
     async def stop():
         """Stop playing song.
         """
-        if self.is_playing():
+        if self.is_playing:
             self.stopped = True
             self.player.stop()
 
@@ -91,7 +91,7 @@ class Radio:
         """Start playing song from queue.
         """
         if self.player is not None:
-            if not self.is_playing():
+            if not self.is_playing:
                 await ctx.invoke(self.resume)
                 return
             else:
@@ -117,7 +117,7 @@ class Radio:
             fmt = 'Playing song "{0}"'
             song_name = unquote(self.current.split('/')[-1])
             await self.bot.say(fmt.format(song_name))
-            self.bot.change_status(discord.Game(name=song_name))
+            await self.bot.change_status(discord.Game(name=song_name))
             
             await self.play_next_song.wait()
             
