@@ -35,7 +35,7 @@ class Radio:
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
-        self.files = self.copycom.list_files(settings.copy_radio_path)
+        self.files = self.copycom.list_files('radio/')
     
     
     @commands.command()
@@ -105,7 +105,7 @@ class Radio:
             self.play_next_song.clear()
             self.current = await self.q.get()
             self.player = self.bot.voice.create_ffmpeg_player(
-                self.copycom.direct_link(settings.copy_radio_path + self.current),
+                self.copycom.direct_link('radio/' + self.current),
                 after=self.toggle_next_song,
                 #options="-loglevel debug -report",
                 headers = dict(self.copycom.session.headers))
