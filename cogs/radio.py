@@ -13,7 +13,7 @@ class Radio:
             discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
 
     @property
-    def is_playing(self)
+    def is_playing(self):
         return self.player is not None and self.player.is_playing()
     
     @commands.command()
