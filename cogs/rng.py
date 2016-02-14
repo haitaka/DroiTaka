@@ -14,21 +14,6 @@ class RNG:
         if ctx.invoked_subcommand is None:
             await self.bot.say('Incorrect random subcommand passed.')
 
-    @random.command()
-    async def weapon(self):
-        """Displays a random Splatoon weapon."""
-        splatoon = self.bot.get_cog('Splatoon')
-        if splatoon is None:
-            await self.bot.say('Splatoon cog is not loaded.')
-            return
-
-        weapons = splatoon.config.get('weapons', [])
-        if weapons:
-            weapon = rng.choice(weapons)
-            await self.bot.say(splatoon.weapon_to_string(weapon))
-
-        del splatoon
-
     @random.command(pass_context=True)
     async def tag(self, ctx):
         """Displays a random tag.
@@ -44,43 +29,7 @@ class RNG:
         name = rng.sample(list(db), 1)[0]
         await self.bot.say('Random tag found: {}\n{}'.format(name, db[name]))
         del tags
-
-    @random.command(name='map')
-    async def _map(self):
-        """Displays a random Splatoon map."""
-        splatoon = self.bot.get_cog('Splatoon')
-        if splatoon is None:
-            await self.bot.say('Splatoon cog is not loaded.')
-            return
-
-        maps = splatoon.config.get('maps', [])
-        if maps:
-            await self.bot.say(rng.choice(maps))
-
-        del splatoon
-
-    @random.command()
-    async def mode(self):
-        """Displays a random Splatoon mode."""
-        mode = rng.choice(['Turf War', 'Splat Zones', 'Rainmaker', 'Tower Control'])
-        await self.bot.say(mode)
-
-    @random.command()
-    async def game(self):
-        """Displays a random map/mode combination (no Turf War)"""
-        splatoon = self.bot.get_cog('Splatoon')
-        if splatoon is None:
-            await self.bot.say('Splatoon cog is not loaded.')
-            return
-
-        maps = splatoon.config.get('maps', [])
-        if maps:
-            mode = rng.choice(['Splat Zones', 'Tower Control', 'Rainmaker'])
-            stage = rng.choice(maps)
-            await self.bot.say('{} on {}'.format(mode, stage))
-
-        del splatoon
-
+        
     @random.command()
     async def number(self, minimum=0, maximum=100):
         """Displays a random number within an optional range.
