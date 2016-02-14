@@ -13,15 +13,14 @@ formatter = commands.HelpFormatter(show_check_failure=True)
 
 initial_extensions = [
     'cogs.meta',
-    'cogs.splatoon',
     'cogs.rng',
     'cogs.mod',
     'cogs.profile',
     'cogs.tags'
 ]
 
-bot = commands.Bot(command_prefix=['?', '\u2757'], formatter=formatter,
-                   description=description, pm_help=None)
+bot = commands.Bot(command_prefix=['!'], formatter=formatter,
+                   description=description, pm_help=False)
 
 @bot.event
 async def on_ready():
