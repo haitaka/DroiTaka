@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord.utils
 
 def is_owner_check(ctx):
-    return ctx.message.author.id == '80088516616269824'
+    return ctx.message.author.id == '123832273626857472'
 
 def is_owner():
     return commands.check(is_owner_check)
