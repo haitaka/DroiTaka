@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import discord.utils
 from .utils.api.pycopy import Copy
-import random, json
+import random, json, asyncio
 
 class Radio:
     """The radio-bot related commands."""
