@@ -4,6 +4,7 @@ from discord.ext import commands
 import discord.utils
 from .utils.api.pycopy import Copy
 import random, json, asyncio
+from urllib.parse import unquote
 
 class Radio:
     """The radio-bot related commands."""
