@@ -123,7 +123,7 @@ class Radio:
     async def update(self):
         """Обновить список песен."""
         self.update_song_list()
-        await self.bot.say("Найдено {} песенок".format(len(self.files)))
+        await self.bot.say("Найдено {} песенок".format(len(self.songs)))
     
     @commands.command()
     async def list(self):
