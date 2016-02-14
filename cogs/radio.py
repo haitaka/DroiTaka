@@ -1,95 +1,59 @@
 from .utils import config, checks, formats
+import discord
 from discord.ext import commands
-import json
 import discord.utils
 
-class TagInfo:
-    def __init__(self, name, content, owner_id, **kwargs):
-        self.name = name
-        self.content = content
-        self.owner_id = owner_id
-        self.uses = kwargs.pop('uses', 0)
-        self.location = kwargs.pop('location')
-
-    @property
-    def is_generic(self):
-        return self.location == 'generic'
-
-    def __str__(self):
-        return self.content
-
-    def info_entries(self, ctx):
-        data = [
-            ('Name', self.name),
-            ('Uses', self.uses),
-            ('Type', 'Generic' if self.is_generic else 'Server-specific'),
-        ]
-
-        # we can make the assumption that if the tag requested is a server specific tag
-        # then the server the message belongs to will be the server of the server specific tag.
-        members = ctx.bot.get_all_members() if self.is_generic else ctx.message.server.members
-        owner = discord.utils.get(members, id=self.owner_id)
-        data.append(('Owner', owner.name))
-        data.append(('Owner ID', owner.id))
-        return data
-
-
-class TagEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, TagInfo):
-            payload = obj.__dict__.copy()
-            payload['__tag__'] = True
-            return payload
-        return json.JSONEncoder.default(self, obj)
-
-def tag_decoder(obj):
-    if '__tag__' in obj:
-        return TagInfo(**obj)
-    return obj
-
-class Tags:
-    """The tag related commands."""
+class Radio:
+    """The radio-bot related commands."""
 
     def __init__(self, bot):
         self.bot = bot
-        self.config = config.Config('tags.json', encoder=TagEncoder, object_hook=tag_decoder,
-                                                 loop=bot.loop, load_later=True)
+        self.player = None
+        if not discord.opus.is_loaded():
+            discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
 
-    def get_tag(self, server, name):
-        # Basically, if we're in a PM then we will use the generic tag database
-        # if we aren't, we will check the server specific tag database.
-        # If we don't have a server specific database, fallback to generic.
-        # If it isn't found, fallback to generic.
-
-        generic = self.config.get('generic', {})
-        if server is None:
-            return generic.get(name)
-
-        db = self.config.get(server.id)
-        if db is None:
-            return generic.get(name)
-
-        entry = db.get(name)
-        if entry is None:
-            return generic.get(name)
-        return entry
-
-    def get_database_location(self, message):
-        return 'generic' if message.channel.is_private else message.server.id
-
-    def get_possible_tags(self, server):
-        """Returns a dict of possible tags that the server can execute.
-
-        If this is a private message then only the generic tags are possible.
-        Server specific tags will override the generic tags.
+    @property
+    def is_playing()
+        return self.player is not None and self.player.is_playing()
+    
+    @commands.command()
+    async def join(self, *, channel : discord.Channel = None):
+        """Join voice channel.
         """
-        generic = self.config.get('generic', {}).copy()
-        if server is None:
-            return generic
-
-        generic.update(self.config.get(server.id, {}))
-        return generic
-
+        if channel is None or channel != discord.ChannelType.voice:
+            await self.bot.say('Cannot find a voice channel by that name.')
+		await self.bot.join_voice_channel(channel)
+		
+	@commands.command()
+    async def leave(self):
+        """Leave voice channel.
+        """
+        await self.stop()
+        await self.bot.voice.disconnect()
+        
+    @commands.command()
+    async def pause(self):
+        """Pause.
+        """
+        if self.player is not None:
+            self.player.pause()
+            
+    @commands.command()
+    async def resume(self):
+        """Resume playing.
+        """
+        if self.player is not None and not self.is_playing():
+            self.player.resume()
+            
+    @commands.command()
+    async def skip(self):
+        """Skip song and play next.
+        """
+        if self.player is not None and self.is_playing():
+            self.player.stop()
+            self.toggle_next_song()
+    
+    """
     @commands.group(pass_context=True, invoke_without_command=True)
     async def tag(self, ctx, *, name : str):
         """Allows you to tag text for later retrieval.
@@ -285,7 +249,7 @@ class Tags:
     @search.error
     async def search_error(self, error, ctx):
         if isinstance(error, commands.MissingRequiredArgument):
-            await self.bot.say('Missing query to search for.')
+            await self.bot.say('Missing query to search for.')"""
 
 def setup(bot):
-    bot.add_cog(Tags(bot))
+    bot.add_cog(Radio(bot))
