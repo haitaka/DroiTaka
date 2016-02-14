@@ -159,13 +159,13 @@ class Meta:
         return fmt.format(d=days, h=hours, m=minutes, s=seconds)
 
     @commands.command()
-    async def join(self, invite : discord.Invite):
+    async def joinserver(self, invite : discord.Invite):
         """Joins a server via invite."""
         await self.bot.accept_invite(invite)
 
     @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_server=True)
-    async def leave(self, ctx):
+    async def leaveserver(self, ctx):
         """Leaves the server.
 
         To use this command you must have Manage Server permissions or have
