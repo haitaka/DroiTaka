@@ -116,7 +116,7 @@ class Radio:
             self.player.start()
             fmt = 'Playing song "{0}"'
             song_name = unquote(self.current.split('/')[-1])
-            await bot.say(fmt.format(song_name))
+            await self.bot.say(fmt.format(song_name))
             self.bot.change_status(discord.Game(name=song_name))
             
             await self.play_next_song.wait()
