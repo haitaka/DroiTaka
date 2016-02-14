@@ -1,57 +1,45 @@
 from discord.ext import commands
-import random as rng
 
-
-class RNG:
-    """Utilities that provide pseudo-RNG."""
+class Pic:
+    """Мемасики и просто картинки."""
 
     def __init__(self, bot):
         self.bot = bot
+        self.pic_dir = 'pictures/'
+        self.pic_list = []
+        self.update_pics()
+        
+    def update_pics(self):
+        self.pic_list = self.bot.pycopy.list_files(self.pic_dir)
+        for pic in pic_list:
+            
 
     @commands.group(pass_context=True)
-    async def random(self, ctx):
-        """Генератор случайностей."""
+    async def pic(self, ctx):
+        """База картинок, мемесов etc."""
         if ctx.invoked_subcommand is None:
-            await self.bot.say('Incorrect random subcommand passed.')
+            await ctx.invoke(commands.help.pic)
         
-    @random.command()
-    async def number(self, minimum=0, maximum=100):
-        """Выбрать случайное число в заданном диапазоне.
-
-        Минимум должен быть меньше максимума, а максимум — меньше 1000.
-        """
-
-        maximum = min(maximum, 1000)
-        if minimum >= maximum:
-            await self.bot.say('Максимум меньше минимума.')
-            return
-
-        await self.bot.say(rng.randint(minimum, maximum))
-
-    @random.command()
-    async def lenny(self):
-        """Displays a random lenny face."""
-        lenny = rng.choice([
-            "( ͡° ͜ʖ ͡°)", "( ͠° ͟ʖ ͡°)", "ᕦ( ͡° ͜ʖ ͡°)ᕤ", "( ͡~ ͜ʖ ͡°)",
-            "( ͡o ͜ʖ ͡o)", "͡(° ͜ʖ ͡ -)", "( ͡͡ ° ͜ ʖ ͡ °)﻿", "(ง ͠° ͟ل͜ ͡°)ง",
-            "ヽ༼ຈل͜ຈ༽ﾉ"
-        ])
-        await self.bot.say(lenny)
-
-    @commands.command(aliases=['выбери', 'вибери'])
-    async def choose(self, choices : str):
-        """Есть два стула...
-
-        Варианты должны быть разделены с помощью `or` или `или`
-        """
-        choices_list = list()
-        for choice in choices.split('or'):
-            choices_list += choice.split('или')
-            
-        if len(choices_list) < 2:
-            await self.bot.say('Шо то хуйня, шо это хуйня.')
-        else:
-            await self.bot.say(rng.choice(choices_list))
+    @pic.command()
+    async def update(self):
+        """Обновить список картиночек."""
+        self.update_pics()
+        await self.bot.say("Найдено {} картиночек.".format(len(self.pic_list)))
+        
+    @pic.command()
+    async def list(self):
+        """ВЫвести список картиночек."""
+        pic_list = ''
+        id = 1
+        for pic in self.pic_list:
+            pic_list += "{}. {}\n".format(id, pic)
+            id += 1
+            if len(pic_list) > 1800:
+                await self.bot.say(pic_list)
+                pic_list = ''
+        await self.bot.say(pic_list)
+        
+    
 
 def setup(bot):
-    bot.add_cog(RNG(bot))
+    bot.add_cog(Pic(bot))
