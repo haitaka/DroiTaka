@@ -50,7 +50,7 @@ class Radio:
         await self.bot.join_voice_channel(channel)
         
     @commands.command(pass_context=True)
-    async def leave(self):
+    async def leave(self, ctx):
         """Leave voice channel.
         """
         await ctx.invoke(self.stop)
@@ -79,7 +79,7 @@ class Radio:
             self.toggle_next_song()
             
     @commands.command()
-    async def stop():
+    async def stop(self):
         """Stop playing song.
         """
         if self.is_playing:
