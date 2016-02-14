@@ -16,11 +16,10 @@ initial_extensions = [
     'cogs.rng',
     'cogs.mod',
     'cogs.radio',
-    'cogs.profile',
     'cogs.tags'
 ]
 
-bot = commands.Bot(command_prefix=['?'], formatter=formatter,
+bot = commands.Bot(command_prefix=['!'], formatter=formatter,
                    description=description, pm_help=False)
 
 @bot.event
