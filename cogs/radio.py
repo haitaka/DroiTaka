@@ -23,7 +23,7 @@ class Radio:
             discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
 
     def load_copy_creds(self):
-        with open('../copy_creds.json') as f:
+        with open('copy_creds.json') as f:
             return json.load(f)
             
     @property
