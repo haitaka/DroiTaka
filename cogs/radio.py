@@ -113,20 +113,20 @@ class Radio:
             await self.play_next_song.wait()
             
     @commands.command(aliases=['c'])
-    async def current():
+    async def current(self):
         """Что там на радио?"""
         if self.is_playing:
             song_name = unquote(self.current.split('/')[-1])
             await self.bot.say(song_name)
         
     @commands.command()
-    async def update():
+    async def update(self):
         """Обновить список песен."""
         self.update_song_list()
         await self.bot.say("Найдено {} песенок".format(len(self.files)))
     
     @commands.command()
-    async def list():
+    async def list(self):
         """Вывести список всех доступных песен."""
         song_list = ""
         id = 1
@@ -139,7 +139,7 @@ class Radio:
         await self.bot.say(song_list)
         
     @commands.command()
-    async def add(song_num : int):
+    async def add(self, song_num : int):
         """Добавить в конец очереди песню с данным номером."""
         await self.q.put(self.songs[song_num-1])
         await self.bot.say("{} будет следующей песенкой".format(self.songs[song_num-1]))
