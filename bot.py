@@ -15,6 +15,7 @@ initial_extensions = [
     'cogs.meta',
     'cogs.rng',
     'cogs.mod',
+    'cogs.radio',
     'cogs.profile',
     'cogs.tags'
 ]
