@@ -90,8 +90,8 @@ class Radio:
     async def play(self, ctx):
         """Start playing song from queue.
         """
-        if self.player is not None:
-            if not self.is_playing:
+        if self.player is not None and not self.stopped:
+            if not self.is_playing and:
                 await ctx.invoke(self.resume)
                 return
             else:
