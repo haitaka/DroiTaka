@@ -3,7 +3,7 @@
 A personal bot that runs on Discord.
 
 ## Running
-
+`depricated`
 You should only need two main configuration files while the rest will be created automatically.
 
 First is a credentials.json file with the credentials:
