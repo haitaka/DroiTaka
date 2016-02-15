@@ -15,7 +15,7 @@ class Pic:
         file_list = self.bot.pycopy.list_files(self.pic_dir)
         for file_name in file_list:
             self.pic_dict[file_name.split('.')[0]] = file_name
-        self.pic.aliases = list(self.pic_dict.values())
+        self.pic.aliases = list(self.pic_dict)
     
     @commands.group(pass_context=True, aliases=[])
     async def pic(self, ctx):
