@@ -8,15 +8,9 @@ class RNG:
 
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.group(pass_context=True)
-    async def random(self, ctx):
-        """Генератор случайностей."""
-        if ctx.invoked_subcommand is None:
-            await self.bot.say('Incorrect random subcommand passed.')
         
     @random.command()
-    async def number(self, minimum=0, maximum=100):
+    async def random(self, minimum=0, maximum=100):
         """Выбрать случайное число в заданном диапазоне.
 
         Минимум должен быть меньше максимума, а максимум — меньше 1000.
@@ -29,15 +23,15 @@ class RNG:
 
         await self.bot.say(rng.randint(minimum, maximum))
 
-    @random.command()
-    async def lenny(self):
-        """Displays a random lenny face."""
-        lenny = rng.choice([
-            "( ͡° ͜ʖ ͡°)", "( ͠° ͟ʖ ͡°)", "ᕦ( ͡° ͜ʖ ͡°)ᕤ", "( ͡~ ͜ʖ ͡°)",
-            "( ͡o ͜ʖ ͡o)", "͡(° ͜ʖ ͡ -)", "( ͡͡ ° ͜ ʖ ͡ °)﻿", "(ง ͠° ͟ل͜ ͡°)ง",
-            "ヽ༼ຈل͜ຈ༽ﾉ"
-        ])
-        await self.bot.say(lenny)
+    #@random.command()
+    #async def lenny(self):
+    #    """Displays a random lenny face."""
+    #    lenny = rng.choice([
+    #        "( ͡° ͜ʖ ͡°)", "( ͠° ͟ʖ ͡°)", "ᕦ( ͡° ͜ʖ ͡°)ᕤ", "( ͡~ ͜ʖ ͡°)",
+    #        "( ͡o ͜ʖ ͡o)", "͡(° ͜ʖ ͡ -)", "( ͡͡ ° ͜ ʖ ͡ °)﻿", "(ง ͠° ͟ل͜ ͡°)ง",
+    #        "ヽ༼ຈل͜ຈ༽ﾉ"
+    #    ])
+    #    await self.bot.say(lenny)
 
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
