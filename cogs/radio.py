@@ -95,7 +95,7 @@ class Radio:
             if not self.bot.is_voice_connected():
                 author_channel = ctx.message.author.voice_channel
                 if author_channel is not None:
-                    await ctx.invoke(self.join, channel=ctx.message.author.voice_channel)
+                    await ctx.invoke(self.join, channel=author_channel.name)
                 else:
                     await self.bot.say('Не выбран голосовой канал.')
                     return
