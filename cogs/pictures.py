@@ -14,10 +14,12 @@ class Pic:
         for pic in pic_list:
             
 
-    @commands.group(pass_context=True)
+    @commands.group(pass_context=True, aliases=self.pic_list)
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
-        if ctx.invoked_subcommand is None:
+        if ctx.invoked_with in self.pic_list:
+            await self.bot.say(ctx.invoked_with)
+        elif ctx.invoked_subcommand is None:
             await ctx.invoke(commands.help.pic)
         
     @pic.command()
