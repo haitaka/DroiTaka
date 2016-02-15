@@ -15,6 +15,7 @@ formatter = commands.HelpFormatter(show_check_failure=True)
 initial_extensions = [
     'cogs.meta',
     'cogs.rng',
+    'cogs.pictures',
     'cogs.mod',
     'cogs.radio',
     'cogs.tags'
