@@ -16,8 +16,9 @@ class Pic:
         for file_name in file_list:
             self.pic_dict[file_name.split('.')[0]] = file_name
         self.pic.aliases = list(self.pic_dict)
+        self.pic.aliases.append('проба')
     
-    @commands.group(pass_context=True, aliases=['проба'])
+    @commands.group(pass_context=True, aliases=[])
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
         if ctx.invoked_with in self.pic_dict:
