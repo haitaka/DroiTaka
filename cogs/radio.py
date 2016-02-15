@@ -40,7 +40,7 @@ class Radio:
     async def join(self, *, channel : discord.Channel = None):
         """Зайти на указанный голосовой канал."""
         if channel is None or channel.type is not discord.ChannelType.voice:
-            await self.bot.say('Нет такого голосового канала.')
+            await self.bot.say('Нет такого голосового канала. {0}'.format(channel.type))
             return
         await self.bot.join_voice_channel(channel)
         
