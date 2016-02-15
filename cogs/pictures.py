@@ -10,10 +10,10 @@ class Pic:
         self.update_pics()
         
     def update_pics(self):
-        self.pic_list = self.bot.pycopy.list_files(self.pic_dir)
-        for pic in pic_list:
+        file_list = self.bot.pycopy.list_files(self.pic_dir)
+        for file_name in file_list:
+            self.pic_list.append(file_name.split('.')[0])
             
-
     @commands.group(pass_context=True, aliases=self.pic_list)
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
