@@ -94,7 +94,7 @@ class Radio:
         while True:
             if not self.bot.is_voice_connected():
                 author_channel = ctx.message.author.voice_channel
-                if (author_channel.type == discord.ChannelType.voice):
+                if author_channel is not None:
                     await ctx.invoke(self.join, channel=ctx.message.author.voice_channel)
                 else:
                     await self.bot.say('Не выбран голосовой канал.')
