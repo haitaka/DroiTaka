@@ -37,11 +37,15 @@ class Radio:
     
     
     @commands.command()
-    async def join(self, *, channel : discord.Channel = None):
+    async def join(self, *, channel_name : str):
         """Зайти на указанный голосовой канал."""
-        if channel is None or channel.type is not discord.ChannelType.voice:
-            await self.bot.say('Нет такого голосового канала. {0}'.format(channel.type))
-            return
+        if self.bot.is_voice_connected():
+            await ctx.invoke(self.leave)
+            
+        check = lambda c: c.name == channel_name and c.type == discord.ChannelType.voice
+        channel = discord.utils.find(check, context.message.server.channels)
+        if channel is None:
+            await self.bot.say('Нет такого голосового канала.')
         await self.bot.join_voice_channel(channel)
         
     @commands.command(pass_context=True)
@@ -89,8 +93,12 @@ class Radio:
             
         while True:
             if not self.bot.is_voice_connected():
-                await ctx.invoke(self.join, channel=ctx.message.author.voice_channel)
-                continue
+                author_channel = ctx.message.author.voice_channel
+                if (author_channel.type == discord.ChannelType.voice):
+                    await ctx.invoke(self.join, channel=ctx.message.author.voice_channel)
+                else:
+                    await self.bot.say('Не выбран голосовой канал.')
+                    return
     
             if self.q.empty():
                 await self.q.put(random.choice(self.songs))
