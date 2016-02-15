@@ -1,4 +1,5 @@
 from discord.ext import commands
+import copy
 
 class Pic:
     """Мемасики и просто картинки."""
@@ -13,7 +14,7 @@ class Pic:
         file_list = self.bot.pycopy.list_files(self.pic_dir)
         for file_name in file_list:
             self.pic_list.append(file_name.split('.')[0])
-        self.pic.aliases = ['test']
+        self.pic.aliases = self.pic_list
     
     @commands.group(pass_context=True, aliases=[])
     async def pic(self, ctx):
