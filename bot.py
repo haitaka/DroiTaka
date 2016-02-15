@@ -4,7 +4,7 @@ from cogs.utils import checks
 import datetime, re
 import json, asyncio
 import copy
-from .cogs.utils.api.pycopy import Copy
+from cogs.utils.api.pycopy import Copy
 
 description = """
 Hello! I am a bot written by Haitaka to provide some nice utilities.
