@@ -118,7 +118,7 @@ class Radio:
             
     @commands.command(aliases=['c'])
     async def current(self):
-        """Что там на радио?"""
+        """Что там играет?"""
         if self.is_playing:
             song_name = unquote(self.current.split('/')[-1])
             await self.bot.say(song_name)
