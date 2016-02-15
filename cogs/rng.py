@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
 from discord.ext import commands
 import random as rng
+import copy
 
 
 class RNG:
     """Utilities that provide pseudo-RNG."""
 
+    el_fractions=['necro',
+                  'walkers',
+                  'xyuecro',
+                  'lords']
+
     def __init__(self, bot):
         self.bot = bot
-        
-    @random.command()
+        self.el_pull = copy.copy(RNG.el_frections)
+
+    @commands.command()
     async def random(self, minimum=0, maximum=100):
         """Выбрать случайное число в заданном диапазоне.
 
@@ -32,6 +39,18 @@ class RNG:
     #        "ヽ༼ຈل͜ຈ༽ﾉ"
     #    ])
     #    await self.bot.say(lenny)
+
+    @commands.group(pass_context=True, aliases=[])
+    async def el(self, ctx):
+        r_answer = ''
+        for fract in self.el_pull:
+            str_answer += '{}\n'.format(fract)
+        await self.bot.say(str_answer)
+
+    @el.command(pass_context=True)
+    async def repull(self, ctx):
+        self.el_pull = copy.copy(RNG.el_fractions)
+        ctx.invoke(self.el)
 
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
