@@ -1,5 +1,6 @@
 from discord.ext import commands
 import copy
+import requests
 
 class Pic:
     """Мемасики и просто картинки."""
@@ -19,6 +20,11 @@ class Pic:
     @commands.group(pass_context=True, aliases=[])
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
+        r = requests.get('https://discordapp.com/api/users/123832273626857472/avatars/02f802ace282e47df81130f0ee8b699f.jpg', stream=True)
+        if r.status_code == 200:
+            r.raw.decode_content = True
+            await self.bot.upload(r.raw)
+                
         if ctx.invoked_with in self.pic_list:
             await self.bot.say(ctx.invoked_with)
         elif ctx.invoked_subcommand is None:
@@ -34,7 +40,7 @@ class Pic:
         
     @pic.command()
     async def list(self):
-        """ВЫвести список картиночек."""
+        """Вывести список картиночек."""
         pic_list = ''
         id = 1
         for pic in self.pic_list:
