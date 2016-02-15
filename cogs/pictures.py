@@ -14,19 +14,18 @@ class Pic:
     def update_pics(self):
         file_list = self.bot.pycopy.list_files(self.pic_dir)
         for file_name in file_list:
-            self.pic_list.append(file_name.split('.')[0])
-        self.pic.aliases = self.pic_list
+            self.pic_list[file_name.split('.')[0]] = file_name
+        self.pic.aliases = list(self.pic_list.values())
     
     @commands.group(pass_context=True, aliases=[])
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
-        r = requests.get('https://discordapp.com/api/users/123832273626857472/avatars/02f802ace282e47df81130f0ee8b699f.jpg', stream=True)
-        if r.status_code == 200:
-            r.raw.decode_content = True
-            await self.bot.upload(r.raw)
-                
         if ctx.invoked_with in self.pic_list:
-            await self.bot.say(ctx.invoked_with)
+            url = self.bot.pycopy.direct_link(self.pic_path + self.pic_list[ctx.invoked_with])
+            r = requests.get(url, stream=True)
+            if r.status_code == 200:
+                r.raw.decode_content = True
+                await self.bot.upload(r.raw, self.pic_list[ctx.invoked_with])
         elif ctx.invoked_subcommand is None:
             msg = copy.copy(ctx.message)
             msg.content = ctx.prefix + 'help pic'
