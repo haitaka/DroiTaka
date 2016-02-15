@@ -48,7 +48,7 @@ class RNG:
         for choice in choices.split('or'):
             choices_list += choice.split('или')
             
-        print(choices_list)
+        await self.bot.say(choices_list)
         if len(choices_list) < 2:
             await self.bot.say('Шо то хуйня, шо это хуйня.')
         else:
