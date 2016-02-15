@@ -21,7 +21,7 @@ class Pic:
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
         if ctx.invoked_with in self.pic_dict:
-            file = self.bot.pycopy.get_file(self.pic_path + self.pic_dict[ctx.invoked_with])
+            file = self.bot.pycopy.get_file(self.pic_dir + self.pic_dict[ctx.invoked_with])
             await self.bot.upload(file, self.pic_dict[ctx.invoked_with])
         elif ctx.invoked_subcommand is None:
             msg = copy.copy(ctx.message)
