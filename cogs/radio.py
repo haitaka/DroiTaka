@@ -43,7 +43,7 @@ class Radio:
             await ctx.invoke(self.leave)
             
         check = lambda c: c.name == channel_name and c.type == discord.ChannelType.voice
-        channel = discord.utils.find(check, context.message.server.channels)
+        channel = discord.utils.find(check, ctx.message.server.channels)
         if channel is None:
             await self.bot.say('Нет такого голосового канала.')
         await self.bot.join_voice_channel(channel)
