@@ -36,8 +36,8 @@ class Radio:
         self.songs = self.bot.pycopy.list_files(self.songs_dir)
     
     
-    @commands.command()
-    async def join(self, *, channel_name : str):
+    @commands.command(pass_context=True)
+    async def join(self, ctx, *, channel_name : str):
         """Зайти на указанный голосовой канал."""
         if self.bot.is_voice_connected():
             await ctx.invoke(self.leave)
