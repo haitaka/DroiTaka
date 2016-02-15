@@ -21,7 +21,9 @@ class Pic:
         if ctx.invoked_with in self.pic_list:
             await self.bot.say(ctx.invoked_with)
         elif ctx.invoked_subcommand is None:
-            await ctx.invoke(commands.help.pic)
+            msg = copy.copy(ctx.message)
+            msg.content = ctx.prefix + 'help pic'
+            await self.bot.process_commands(msg)
         
     @pic.command()
     async def update(self):
