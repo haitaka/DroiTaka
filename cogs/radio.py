@@ -18,7 +18,7 @@ class Radio:
         self.q = asyncio.Queue()
         self.play_next_song = asyncio.Event()
         self.current_song = None
-        copy_creds = self.load_copy_creds()
+        #copy_creds = self.load_copy_creds()
         #self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
         self.songs_dir = 'radio/'
         self.songs = []
