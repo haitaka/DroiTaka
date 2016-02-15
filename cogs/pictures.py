@@ -13,14 +13,15 @@ class Pic:
         file_list = self.bot.pycopy.list_files(self.pic_dir)
         for file_name in file_list:
             self.pic_list.append(file_name.split('.')[0])
-            
-    @commands.group(pass_context=True, aliases=self.pic_list)
-    async def pic(self, ctx):
-        """База картинок, мемесов etc."""
-        if ctx.invoked_with in self.pic_list:
-            await self.bot.say(ctx.invoked_with)
-        elif ctx.invoked_subcommand is None:
-            await ctx.invoke(commands.help.pic)
+    
+    def test(self):
+        @commands.group(pass_context=True, aliases=self.pic_list)
+        async def pic(self, ctx):
+            """База картинок, мемесов etc."""
+            if ctx.invoked_with in self.pic_list:
+                await self.bot.say(ctx.invoked_with)
+            elif ctx.invoked_subcommand is None:
+                await ctx.invoke(commands.help.pic)
         
     @pic.command()
     async def update(self):
@@ -41,7 +42,6 @@ class Pic:
                 pic_list = ''
         await self.bot.say(pic_list)
         
-    
-
+        
 def setup(bot):
     bot.add_cog(Pic(bot))
