@@ -1,5 +1,6 @@
 from discord.ext import commands
 import copy
+from urllib.parse import unquote
 import requests
 
 class Pic:
@@ -14,9 +15,8 @@ class Pic:
     def update_pics(self):
         file_list = self.bot.pycopy.list_files(self.pic_dir)
         for file_name in file_list:
-            self.pic_dict[file_name.split('.')[0]] = file_name
+            self.pic_dict[file_name.split('.')[0]] = unquote(file_name)
         self.pic.aliases = list(self.pic_dict)
-        self.pic.aliases.append('проба')
     
     @commands.group(pass_context=True, aliases=[])
     async def pic(self, ctx):
