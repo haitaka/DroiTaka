@@ -15,7 +15,7 @@ class Pic:
     def update_pics(self):
         file_list = self.bot.pycopy.list_files(self.pic_dir)
         for file_name in file_list:
-            self.pic_dict[file_name.split('.')[0]] = unquote(file_name)
+            self.pic_dict[file_name.split('.')[0].lower()] = unquote(file_name)
         self.pic.aliases = list(self.pic_dict)
     
     @commands.group(pass_context=True, aliases=[])
