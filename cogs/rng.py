@@ -7,8 +7,6 @@ import copy
 class RNG:
     """Utilities that provide pseudo-RNG."""
 
-    el_fractions=['necro', 'walkers', 'xyuecro', 'lords']
-
     def __init__(self, bot):
         self.bot = bot
         self.el_pull = copy.copy(RNG.el_frections)
