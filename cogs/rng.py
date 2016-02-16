@@ -35,14 +35,15 @@ class RNG:
     #    ])
     #    await self.bot.say(lenny)
 
-    @commands.group(pass_context=True, aliases=[])
+    @commands.group(pass_context=True, aliases=['ел'])
     async def el(self, ctx):
-        r_answer = ''
+        """Выбор фракции в Endless Legend."""
+        str_answer = ''
         for fract in self.el_pull:
             str_answer += '{}\n'.format(fract)
         await self.bot.say(str_answer)
 
-    @el.command(pass_context=True)
+    @el.command(pass_context=True, aliases=['репул'])
     async def repull(self, ctx):
         self.el_pull = copy.copy(RNG.el_fractions)
         ctx.invoke(self.el)
