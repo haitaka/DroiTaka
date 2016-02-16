@@ -37,17 +37,7 @@ class RNG:
     #    ])
     #    await self.bot.say(lenny)
 
-    @commands.group(pass_context=True, aliases=[])
-    async def el(self, ctx):
-        r_answer = ''
-        for fract in self.el_pull:
-            str_answer += '{}\n'.format(fract)
-        await self.bot.say(str_answer)
 
-    @el.command(pass_context=True)
-    async def repull(self, ctx):
-        self.el_pull = copy.copy(RNG.el_fractions)
-        ctx.invoke(self.el)
 
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
