@@ -12,6 +12,7 @@ class RNG:
         self.bot = bot
         self.el_pull = copy.copy(RNG.el_fractions)
         self.ban.aliases += RNG.el_fractions
+        self.roll.aliases += map(str, range(1,9))
 
     @commands.command()
     async def random(self, minimum=0, maximum=100):
@@ -37,29 +38,26 @@ class RNG:
     #    await self.bot.say(lenny)
 
     @commands.group(pass_context=True, aliases=['ел'])
-    async def el(self, ctx, *, players_count = 0):
+    async def el(self, ctx):
         """Выбор фракции в Endless Legend.
         
         Здесь был Vinyl.
         """
-        await self.bot.say(ctx.invoked_subcommand)
-        await self.bot.say(players_count)
         if ctx.invoked_subcommand is None:
-            if players_count is 0:
-                str_answer = ''
-                for idx, fract in enumerate(self.el_pull, 1):
-                    str_answer += '{}. {}\n'.format(idx, fract)
-                await self.bot.say(str_answer)
-            else:
-                ctx.invoke(self.roll, count = players_count)
+            str_answer = ''
+            for idx, fract in enumerate(self.el_pull, 1):
+                str_answer += '{}. {}\n'.format(idx, fract)
+            await self.bot.say(str_answer)
 
     @el.command(pass_context=True, aliases=['репул'])
     async def repull(self, ctx):
+        """Восстановить список."""
         self.el_pull = copy.copy(RNG.el_fractions)
         ctx.invoke(self.el)
 
     @el.command(pass_context=True, aliases=[], hidden=True)
     async def ban(self, ctx):
+        """Исключить фракцию из списка."""
         if ctx.invoked_with in self.el_pull:
             self.el_pull.remove(fraction)
             ctx.invoke(self.el)
@@ -68,7 +66,9 @@ class RNG:
     
     @el.command(pass_context=True, aliases=['ролл', 'я создал', 'выбор'])
     async def roll(self, ctx, *, count : int = 0):
-        await self.bot.say(count)
+        """Выбрать *count* случайных фракций."""
+        if ctx.invoked_with in map(str, range(1,9)):
+            count = int(ctx.invoked_with)
         choice = rng.sample(self.el_pull, count)
         str_answer = ''
         for idx, fract in enumerate(choice, 1):
