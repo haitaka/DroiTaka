@@ -37,7 +37,7 @@ class RNG:
     #    await self.bot.say(lenny)
 
     @commands.group(pass_context=True, aliases=['ел'])
-    async def el(self, ctxб *, players_count : int = 0):
+    async def el(self, ctx, *, players_count : int = 0):
         """Выбор фракции в Endless Legend.
         
         Здесь был Vinyl.
