@@ -43,6 +43,7 @@ class RNG:
         Здесь был Vinyl.
         """
         await self.bot.say(ctx.invoked_subcommand)
+        await self.bot.say(players_count)
         if ctx.invoked_subcommand is None:
             if players_count is 0:
                 str_answer = ''
@@ -66,7 +67,8 @@ class RNG:
             await self.bot.say('Нет такой фракции.')
     
     @el.command(pass_context=True, aliases=['ролл', 'я создал', 'выбор'])
-    async def roll(self, ctx, *, count : int):
+    async def roll(self, ctx, *, count : int = 0):
+        await self.bot.say(count)
         choice = rng.sample(self.el_pull, count)
         str_answer = ''
         for idx, fract in enumerate(choice, 1):
