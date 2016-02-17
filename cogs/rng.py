@@ -55,10 +55,13 @@ class RNG:
         ctx.invoke(self.el)
 
     @el.command(pass_context=True, aliases=[], hidden=True)
-    async def ban(self, ctx):
+    async def ban(self, ctx, *fractions):
         """Исключить фракцию из списка."""
+        for fract in fractions:
+            if fract in self.el_pull:
+                self.el_pull.remove(fract)
         if ctx.invoked_with in self.el_pull:
-            self.el_pull.remove(fraction)
+            self.el_pull.remove(ctx.invoked_with)
             ctx.invoke(self.el)
         else:
             await self.bot.say('Нет такой фракции.')
