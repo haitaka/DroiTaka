@@ -38,10 +38,11 @@ class RNG:
     @commands.group(pass_context=True, aliases=['ел'])
     async def el(self, ctx):
         """Выбор фракции в Endless Legend."""
-        str_answer = ''
-        for fract in self.el_pull:
-            str_answer += '{}\n'.format(fract)
-        await self.bot.say(str_answer)
+        if ctx.invoked_subcommand is None:
+            str_answer = ''
+            for fract in self.el_pull:
+                str_answer += '{}\n'.format(fract)
+            await self.bot.say(str_answer)
 
     @el.command(pass_context=True, aliases=['репул'])
     async def repull(self, ctx):
