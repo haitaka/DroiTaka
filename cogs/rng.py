@@ -37,7 +37,7 @@ class RNG:
     #    await self.bot.say(lenny)
 
     @commands.group(pass_context=True, aliases=['ел'])
-    async def el(self, ctx):
+    async def el(self, ctx, *, players_count = 0):
         """Выбор фракции в Endless Legend.
         
         Здесь был Vinyl.
@@ -50,7 +50,7 @@ class RNG:
                     str_answer += '{}. {}\n'.format(idx, fract)
                 await self.bot.say(str_answer)
             else:
-                ctx.invoke(self.roll, players_count)
+                ctx.invoke(self.roll, count = players_count)
 
     @el.command(pass_context=True, aliases=['репул'])
     async def repull(self, ctx):
