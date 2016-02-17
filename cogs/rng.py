@@ -6,7 +6,7 @@ import copy
 class RNG:
     """Utilities that provide pseudo-RNG."""
 
-    el_fractions=['ходоки', 'лорды', 'некрофаги', 'маги', 'хуители']
+    el_fractions=['Ходоки', 'Лорды', 'Некрофаги', 'Маги', 'Хранители', 'Драккны', 'Забитые', 'Кланы']
 
     def __init__(self, bot):
         self.bot = bot
@@ -48,6 +48,19 @@ class RNG:
         self.el_pull = copy.copy(RNG.el_fractions)
         ctx.invoke(self.el)
 
+    @el.command(pass_context=True, aliases=['бан'])
+    async def ban(self, ctx, *, fraction : str):
+        self.el_pull.remove(fraction)
+        ctx.invoke(self.el)
+    
+    @el.command(pass_context=True, aliases=['го', 'я создал'])
+    async def go(self, ctx, *, count : int):
+        choice = rng.sample(self.el_pull, count)
+        str_answer = ''
+        for fract in choice:
+            str_answer += '{}\n'.format(fract)
+        await self.bot.say(str_answer)
+        
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
         """Есть два стула...
