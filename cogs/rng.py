@@ -12,7 +12,6 @@ class RNG:
         self.bot = bot
         self.el_pull = copy.copy(RNG.el_fractions)
         self.ban.aliases += RNG.el_fractions
-        self.roll.aliases += map(str, range(1,9))
 
     @commands.command()
     async def random(self, minimum=0, maximum=100):
@@ -64,11 +63,9 @@ class RNG:
         else:
             await self.bot.say('Нет такой фракции.')
     
-    @el.command(pass_context=True, aliases=['ролл', 'я создал', 'выбор'])
+    @el.command(pass_context=True, aliases=['ролл', 'выбор'])
     async def roll(self, ctx, *, count : int = 0):
         """Выбрать *count* случайных фракций."""
-        if ctx.invoked_with in map(str, range(1,9)):
-            count = int(ctx.invoked_with)
         choice = rng.sample(self.el_pull, count)
         str_answer = ''
         for idx, fract in enumerate(choice, 1):
