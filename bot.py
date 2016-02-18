@@ -163,6 +163,12 @@ async def do(ctx, times : int, *, command):
     msg.content = command
     for i in range(times):
         await bot.process_commands(msg)
+        
+@bot.command()
+async def restart():
+    """Restarts the bot."""
+    os.system("killall -9 ffmpeg")
+    os.execl(sys.executable, 'python3.5', __file__, *sys.argv[1:])
 
 def load_credentials():
     with open('credentials.json') as f:
