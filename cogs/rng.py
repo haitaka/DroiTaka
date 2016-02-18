@@ -70,6 +70,9 @@ class RNG:
         """
         
         uniq = False
+        if not args:
+            await self.print_pull(self.el_pull)
+            
         for arg in args:
             if arg.strip().isdigit():
                 if int(arg) in range(1, 9):
