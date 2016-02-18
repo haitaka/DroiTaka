@@ -97,12 +97,6 @@ class RNG:
                     self.el_pull.remove(match)
 
                 await self.print_pull(self.el_pull)
-    
-    @el.command(pass_context=True, aliases=['ролл', 'выбор'])
-    async def roll(self, ctx, *, count : int = 0):
-        """Выбрать *count* случайных фракций."""
-        choice = rng.sample(self.el_pull, count)
-        await self.print_pull(choice)
         
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
