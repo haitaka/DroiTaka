@@ -5,13 +5,20 @@ import copy
 class RNG:
     """Utilities that provide pseudo-RNG."""
 
-    el_fractions=['ходоки', 'лорды', 'некрофаги', 'маги', 'хранители', 'драккны', 'забитые', 'кланы']
+    el_fractions = [['Дикие Ходоки', 'ходоки', 'ходукены', 'Wild Walkers'],
+                    ['Сломленные Лорды', 'Владыки праха', 'Broken Lords'],
+                    ['Хранители', 'Vaulters'],
+                    ['Некрофаги', 'Necrophages'],
+                    ['Ярые Маги', 'Неистовые маги', 'они слабы', 'Ardent Mages'],
+                    ['Кочующие Кланы', 'кочевники', 'Roving Clans'],
+                    ['Драккены', 'Drakken'],
+                    ['Культисты', 'Cultists'],
+                    ['Забытые', 'Тени', 'Forgotten']]
 
     def __init__(self, bot):
         self.bot = bot
         self.el_pull = copy.copy(RNG.el_fractions)
-        self.ban.aliases += RNG.el_fractions
-        self.ban.aliases.append('test')
+        
     @commands.command()
     async def random(self, minimum=0, maximum=100):
         """Выбрать случайное число в заданном диапазоне.
@@ -35,6 +42,15 @@ class RNG:
     #    ])
     #    await self.bot.say(lenny)
 
+    def sample(seq, length, uniq=True):
+        if uniq:
+            return rng.sample(seq, length)
+        else:
+            result = []
+            for i in range(length):
+                result.append(rng.random.choice(seq))
+            return result
+        
     async def print_pull(self, pull):
         str_answer = ''
         for idx, fract in enumerate(pull, 1):
@@ -42,33 +58,38 @@ class RNG:
         await self.bot.say(str_answer)
         
     @commands.group(pass_context=True, aliases=['ел'])
-    async def el(self, ctx):
+    async def el(self, ctx, *args):
         """Выбор фракции в Endless Legend.
         
         Здесь был Vinyl.
         """
+        
+        uniq = False
+        for arg in args:
+            if arg.strip().isdigit():
+                if int(arg) in range(1, 9):
+                    choice = self.sample(self.el_pull, int(arg), uniq)
+                    await self.print_pull(choice)
+                uniq = False
+            elif arg in ['uniq', 'uni', 'уни', 'уникал']:
+                uniq = True
+            else:
+                match = None
+                maxratio = 0
+                for fract in RNG.el_fractions:
+                    for alias in fract:
+                        ratio = self.similar(arg, alias)
+                        if ratio > maxratio:
+                            match = fract
+                            maxratio = ratio
+                if match in self.el_pull:
+                    await self.bot.say('{} удалены из списка.'.format(match[0]))
+                    self.el_pull.remove(match)
+
+                await self.print_pull(self.el_pull)
+                
         if ctx.invoked_subcommand is None:
             await self.print_pull(self.el_pull)
-
-    @el.command(pass_context=True, aliases=['репул', 'репулл'])
-    async def repull(self, ctx):
-        """Восстановить список."""
-        self.el_pull = copy.copy(RNG.el_fractions)
-        await self.print_pull(self.el_pull)
-
-    @el.command(pass_context=True, aliases=copy.copy(el_fractions), hidden=True)
-    async def ban(self, ctx, *fractions):
-        """Исключить фракцию из списка."""
-        for fract in fractions:
-            if fract in self.el_pull:
-                await self.bot.say(fract)
-                self.el_pull.remove(fract)
-        await self.bot.say(ctx.invoked_with)
-        if ctx.invoked_with in self.el_pull:
-            self.el_pull.remove(ctx.invoked_with)
-            await self.print_pull(self.el_pull)
-        else:
-            await self.bot.say('Нет такой фракции.')
     
     @el.command(pass_context=True, aliases=['ролл', 'выбор'])
     async def roll(self, ctx, *, count : int = 0):
