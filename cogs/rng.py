@@ -35,7 +35,7 @@ class RNG:
     #    ])
     #    await self.bot.say(lenny)
 
-    async def print_pull(pull):
+    async def print_pull(self, pull):
         str_answer = ''
         for idx, fract in enumerate(pull, 1):
             str_answer += '{}. {}\n'.format(idx, fract)
