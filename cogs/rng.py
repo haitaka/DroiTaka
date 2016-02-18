@@ -2,9 +2,6 @@ from discord.ext import commands
 import random as rng
 import copy
 
-el_fractions=['ходоки', 'лорды', 'некрофаги', 'маги', 'хранители', 'драккны', 'забитые', 'кланы']
-
-
 class RNG:
     """Utilities that provide pseudo-RNG."""
 
@@ -38,38 +35,36 @@ class RNG:
     #    ])
     #    await self.bot.say(lenny)
 
+    async def print_pull(pull):
+        str_answer = ''
+        for idx, fract in enumerate(pull, 1):
+            str_answer += '{}. {}\n'.format(idx, fract)
+        await self.bot.say(str_answer)
+        
     @commands.group(pass_context=True, aliases=['ел'])
     async def el(self, ctx):
         """Выбор фракции в Endless Legend.
         
         Здесь был Vinyl.
         """
-        await self.bot.say(ctx.invoked_subcommand)
         if ctx.invoked_subcommand is None:
-            str_answer = ''
-            for idx, fract in enumerate(self.el_pull, 1):
-                str_answer += '{}. {}\n'.format(idx, fract)
-            await self.bot.say(str_answer)
+            await self.print_pull(self.el_pull)
 
-    @el.command(pass_context=True, aliases=['репул'])
+    @el.command(pass_context=True, aliases=['репул', 'репулл'])
     async def repull(self, ctx):
         """Восстановить список."""
         self.el_pull = copy.copy(RNG.el_fractions)
-        ctx.invoke(self.el)
+        await self.print_pull(self.el_pull)
 
     @el.command(pass_context=True, aliases=copy.copy(el_fractions), hidden=True)
     async def ban(self, ctx, *fractions):
         """Исключить фракцию из списка."""
-        #await self.bot.say(ctx.invoked_with in self.el_pull)
-        #await self.bot.say(self.el_pull)
         for fract in fractions:
             if fract in self.el_pull:
                 self.el_pull.remove(fract)
         if ctx.invoked_with in self.el_pull:
-            await self.bot.say(self.el_pull)
             self.el_pull.remove(ctx.invoked_with)
-            await self.bot.say(self.el_pull)
-            ctx.invoke(self.el)
+            await self.print_pull(self.el_pull)
         else:
             await self.bot.say('Нет такой фракции.')
     
@@ -77,10 +72,7 @@ class RNG:
     async def roll(self, ctx, *, count : int = 0):
         """Выбрать *count* случайных фракций."""
         choice = rng.sample(self.el_pull, count)
-        str_answer = ''
-        for idx, fract in enumerate(choice, 1):
-            str_answer += '{}. {}\n'.format(idx, fract)
-        await self.bot.say(str_answer)
+        await self.print_pull(choice)
         
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
