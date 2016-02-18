@@ -65,7 +65,10 @@ class RNG:
     async def el(self, ctx, *args):
         """Выбор фракции в Endless Legend.
         
-        Здесь был Vinyl.
+        !el вывести список фракций
+        !el {n} выбрать *n* случайных фракций
+        !el uniq {n} выбрать *n* случайных фракций без повторений
+        !el {fract} исключить *fract* из списка
         """
         
         uniq = False
@@ -78,7 +81,7 @@ class RNG:
                     choice = self.sample(self.el_pull, int(arg), uniq)
                     await self.print_pull(choice)
                 uniq = False
-            elif arg in ['uniq', 'uni', 'уни', 'уникал']:
+            elif arg in ['uniq', 'uni', 'уни', 'уникал', 'уник']:
                 uniq = True
             else:
                 match = None
