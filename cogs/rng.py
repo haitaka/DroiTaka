@@ -2,6 +2,8 @@ from discord.ext import commands
 import random as rng
 import copy
 
+el_fractions=['ходоки', 'лорды', 'некрофаги', 'маги', 'хранители', 'драккны', 'забитые', 'кланы']
+
 
 class RNG:
     """Utilities that provide pseudo-RNG."""
@@ -12,7 +14,7 @@ class RNG:
         self.bot = bot
         self.el_pull = copy.copy(RNG.el_fractions)
         self.ban.aliases += RNG.el_fractions
-
+        self.ban.aliases.append('test')
     @commands.command()
     async def random(self, minimum=0, maximum=100):
         """Выбрать случайное число в заданном диапазоне.
@@ -42,6 +44,7 @@ class RNG:
         
         Здесь был Vinyl.
         """
+        await self.bot.say(ctx.invoked_subcommand)
         if ctx.invoked_subcommand is None:
             str_answer = ''
             for idx, fract in enumerate(self.el_pull, 1):
@@ -54,14 +57,18 @@ class RNG:
         self.el_pull = copy.copy(RNG.el_fractions)
         ctx.invoke(self.el)
 
-    @el.command(pass_context=True, aliases=[], hidden=True)
+    @el.command(pass_context=True, aliases=copy.copy(el_fractions), hidden=True)
     async def ban(self, ctx, *fractions):
         """Исключить фракцию из списка."""
+        #await self.bot.say(ctx.invoked_with in self.el_pull)
+        #await self.bot.say(self.el_pull)
         for fract in fractions:
             if fract in self.el_pull:
                 self.el_pull.remove(fract)
         if ctx.invoked_with in self.el_pull:
+            await self.bot.say(self.el_pull)
             self.el_pull.remove(ctx.invoked_with)
+            await self.bot.say(self.el_pull)
             ctx.invoke(self.el)
         else:
             await self.bot.say('Нет такой фракции.')
