@@ -2,7 +2,7 @@ from discord.ext import commands
 from .utils import checks, formats
 import discord
 from collections import OrderedDict, deque, Counter
-import os, datetime
+import os, sys, datetime
 import re, asyncio
 
 class TimeParser:
