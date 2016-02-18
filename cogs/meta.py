@@ -72,7 +72,7 @@ class Meta:
         
     @commands.command(name='restart')
     #@checks.is_owner()
-    async def _restart():
+    async def _restart(self):
         """Restarts the bot."""
         os.system("killall -9 ffmpeg")
         os.execl(sys.executable, 'python3.5', __file__, *sys.argv[1:])
