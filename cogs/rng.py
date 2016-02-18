@@ -1,4 +1,5 @@
 from discord.ext import commands
+from difflib import SequenceMatcher
 import random as rng
 import copy
 
@@ -50,11 +51,14 @@ class RNG:
             for i in range(length):
                 result.append(rng.random.choice(seq))
             return result
+            
+    def similar(a, b):
+        return SequenceMatcher(None, a, b).ratio()
         
     async def print_pull(self, pull):
         str_answer = ''
         for idx, fract in enumerate(pull, 1):
-            str_answer += '{}. {}\n'.format(idx, fract)
+            str_answer += '{}. {}\n'.format(idx, fract[0])
         await self.bot.say(str_answer)
         
     @commands.group(pass_context=True, aliases=['ел'])
@@ -87,9 +91,6 @@ class RNG:
                     self.el_pull.remove(match)
 
                 await self.print_pull(self.el_pull)
-                
-        if ctx.invoked_subcommand is None:
-            await self.print_pull(self.el_pull)
     
     @el.command(pass_context=True, aliases=['ролл', 'выбор'])
     async def roll(self, ctx, *, count : int = 0):
