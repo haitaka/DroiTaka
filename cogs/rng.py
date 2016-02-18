@@ -72,8 +72,7 @@ class RNG:
         """
         
         uniq = False
-        if not args:
-            await self.print_pull(self.el_pull)
+        isroll = False
             
         for arg in args:
             if arg.strip().isdigit():
@@ -81,8 +80,11 @@ class RNG:
                     choice = self.sample(self.el_pull, int(arg), uniq)
                     await self.print_pull(choice)
                 uniq = False
+                isroll = True
             elif arg in ['uniq', 'uni', 'уни', 'уникал', 'уник']:
                 uniq = True
+            elif arg in ['repull', 'репул', 'репулл', 'ресет']:
+                self.el_pull = copy.copy(RNG.el_fractions)
             else:
                 match = None
                 maxratio = 0
@@ -95,8 +97,9 @@ class RNG:
                 if match in self.el_pull:
                     await self.bot.say('{} удалены из списка.'.format(match[0]))
                     self.el_pull.remove(match)
-
-                await self.print_pull(self.el_pull)
+                    
+        if not isroll:
+            await self.print_pull(self.el_pull)
         
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
