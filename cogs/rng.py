@@ -61,7 +61,9 @@ class RNG:
         """Исключить фракцию из списка."""
         for fract in fractions:
             if fract in self.el_pull:
+                await self.bot.say(fract)
                 self.el_pull.remove(fract)
+        await self.bot.say(ctx.invoked_with)
         if ctx.invoked_with in self.el_pull:
             self.el_pull.remove(ctx.invoked_with)
             await self.print_pull(self.el_pull)
