@@ -70,7 +70,7 @@ class Meta:
         """Quits the bot."""
         await self.bot.logout()
         
-    @ctl.command(name='restart')
+    @commands.command(name='restart')
     #@checks.is_owner()
     async def _restart():
         """Restarts the bot."""
