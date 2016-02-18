@@ -7,10 +7,10 @@ class RNG:
     """Utilities that provide pseudo-RNG."""
 
     el_fractions = [['Дикие Ходоки', 'ходоки', 'ходукены', 'Wild Walkers'],
-                    ['Сломленные Лорды', 'Владыки праха', 'Broken Lords'],
+                    ['Владыки праха', 'Сломленные Лорды', 'Broken Lords'],
                     ['Хранители', 'Vaulters'],
                     ['Некрофаги', 'Necrophages'],
-                    ['Ярые Маги', 'Неистовые маги', 'они слабы', 'Ardent Mages'],
+                    ['Неистовые маги', 'Ярые Маги', 'они слабы', 'Ardent Mages'],
                     ['Кочующие Кланы', 'кочевники', 'Roving Clans'],
                     ['Драккены', 'Drakken'],
                     ['Культисты', 'Cultists'],
@@ -43,7 +43,7 @@ class RNG:
     #    ])
     #    await self.bot.say(lenny)
 
-    def sample(seq, length, uniq=True):
+    def sample(self, seq, length, uniq=True):
         if uniq:
             return rng.sample(seq, length)
         else:
@@ -52,7 +52,7 @@ class RNG:
                 result.append(rng.random.choice(seq))
             return result
             
-    def similar(a, b):
+    def similar(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
         
     async def print_pull(self, pull):
@@ -60,6 +60,7 @@ class RNG:
         for idx, fract in enumerate(pull, 1):
             str_answer += '{}. {}\n'.format(idx, fract[0])
         await self.bot.say(str_answer)
+        await self.bot.say('hi')
         
     @commands.group(pass_context=True, aliases=['ел'])
     async def el(self, ctx, *args):
