@@ -69,6 +69,13 @@ class Meta:
     async def _quit(self):
         """Quits the bot."""
         await self.bot.logout()
+        
+    @ctl.command(name='restart')
+    #@checks.is_owner()
+    async def _restart():
+        """Restarts the bot."""
+    	os.system("killall -9 ffmpeg")
+    	os.execl(sys.executable, 'python3.5', __file__, *sys.argv[1:])
 
     @commands.command(pass_context=True)
     async def info(self, ctx, *, member : discord.Member = None):
