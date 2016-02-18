@@ -49,7 +49,7 @@ class RNG:
         else:
             result = []
             for i in range(length):
-                result.append(rng.random.choice(seq))
+                result.append(rng.choice(seq))
             return result
             
     def similar(self, a, b):
@@ -60,7 +60,6 @@ class RNG:
         for idx, fract in enumerate(pull, 1):
             str_answer += '{}. {}\n'.format(idx, fract[0])
         await self.bot.say(str_answer)
-        await self.bot.say('hi')
         
     @commands.group(pass_context=True, aliases=['ел'])
     async def el(self, ctx, *args):
