@@ -2,7 +2,7 @@ from discord.ext import commands
 from .utils import checks, formats
 import discord
 from collections import OrderedDict, deque, Counter
-import os, sys, datetime
+import os, datetime
 import re, asyncio
 
 class TimeParser:
@@ -69,13 +69,6 @@ class Meta:
     async def _quit(self):
         """Quits the bot."""
         await self.bot.logout()
-        
-    @commands.command(name='restart')
-    #@checks.is_owner()
-    async def _restart(self):
-        """Restarts the bot."""
-        os.system("killall -9 ffmpeg")
-        os.execl(sys.executable, 'python3.5', __file__, *sys.argv[1:])
 
     @commands.command(pass_context=True)
     async def info(self, ctx, *, member : discord.Member = None):
