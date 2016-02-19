@@ -120,6 +120,7 @@ class Radio:
             await self.bot.change_status(discord.Game(name=song_name))
             
             await self.play_next_song.wait()
+        await self.bot.say('Leaving player loop')
             
     @commands.command(aliases=['c'])
     async def current(self):
