@@ -15,22 +15,22 @@ class Radio:
             discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
             
         self.player = None
-        self.stopped = True
+        #self.stopped = True
         self.q = asyncio.Queue()
         self.play_next_song = asyncio.Event()
+        self.stopped = asyncio.Event()
         self.current_song = None
-        #copy_creds = self.load_copy_creds()
-        #self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
         self.songs_dir = 'radio/'
         self.songs = []
         self.update_song_list()
             
     @property
     def is_playing(self):
-        return self.player is not None and self.player.is_playing() and not self.stopped
+        return self.player is not None and self.player.is_playing() and not self.stopped.is_set()
         
     def toggle_next_song(self):
-        if not self.stopped:
+        await self.bot.change_status(None)
+        if not self.stopped.is_set():
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
@@ -78,13 +78,14 @@ class Radio:
     async def stop(self):
         """Остановить воспроизведение."""
         if self.is_playing:
-            self.stopped = True
+            await self.stopped.set()
             self.player.stop()
 
     @commands.command(pass_context=True)
     async def play(self, ctx):
         """Начать воспроизведение песен из очереди."""
-        if self.player is not None and not self.stopped:
+        self.stopped.clear()
+        if self.player is not None:# and not self.stopped.is_set():
             if not self.is_playing:
                 await ctx.invoke(self.resume)
                 return
@@ -100,18 +101,20 @@ class Radio:
                 else:
                     await self.bot.say('Не выбран голосовой канал.')
                     return
-    
+            
+            if self.stopped.is_set():
+                break
+            s
             if self.q.empty():
                 await self.q.put(random.choice(self.songs))
             self.play_next_song.clear()
             self.current = await self.q.get()
-            os.system("killall -9 ffmpeg")
             self.player = self.bot.voice.create_ffmpeg_player(
                 self.bot.pycopy.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song,
                 #options="-loglevel debug -report",
                 headers = dict(self.bot.pycopy.session.headers))
-            self.stopped = False
+            #self.stopped.clear()
             self.player.start()
             song_name = unquote(self.current.split('/')[-1])
             await self.bot.change_status(discord.Game(name=song_name))
