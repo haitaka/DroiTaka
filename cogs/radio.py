@@ -78,7 +78,7 @@ class Radio:
     async def stop(self):
         """Остановить воспроизведение."""
         if self.is_playing:
-            await self.stopped.set()
+            self.stopped.set()
             self.player.stop()
 
     @commands.command(pass_context=True)
