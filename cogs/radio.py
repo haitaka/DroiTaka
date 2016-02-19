@@ -15,7 +15,7 @@ class Radio:
             
         self.player = None
         self.stopped = True
-        self.break_loop = asyncio.Queue()
+        self.break_loop = asyncio.Event()
         #self.break_loop.clear()
         self.q = asyncio.Queue()
         self.play_next_song = asyncio.Event()
