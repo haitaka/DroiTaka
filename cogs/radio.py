@@ -20,8 +20,6 @@ class Radio:
         self.q = asyncio.Queue()
         self.play_next_song = asyncio.Event()
         self.current_song = None
-        #copy_creds = self.load_copy_creds()
-        #self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
         self.songs_dir = 'radio/'
         self.songs = []
         self.update_song_list()
@@ -120,7 +118,8 @@ class Radio:
             
             await self.play_next_song.wait()
             if self.break_loop.is_set():
-                break
+                return
+        await self.bot.say('Leaving play loop')
             
     @commands.command(aliases=['c'])
     async def current(self):
