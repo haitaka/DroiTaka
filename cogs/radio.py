@@ -14,21 +14,24 @@ class Radio:
             discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
             
         self.player = None
-        #self.stopped = True
+        self.stopped = True
+        self.break_loop = asyncio.Queue()
+        self.break_loop.clear()
         self.q = asyncio.Queue()
         self.play_next_song = asyncio.Event()
-        self.stopped = asyncio.Event()
         self.current_song = None
+        #copy_creds = self.load_copy_creds()
+        #self.copycom = Copy(copy_creds['login'], copy_creds['passwd'])
         self.songs_dir = 'radio/'
         self.songs = []
         self.update_song_list()
             
     @property
     def is_playing(self):
-        return self.player is not None and self.player.is_playing() and not self.stopped.is_set()
+        return self.player is not None and self.player.is_playing() and not self.stopped
         
     def toggle_next_song(self):
-        if not self.stopped.is_set():
+        if not self.stopped:
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
@@ -76,16 +79,15 @@ class Radio:
     async def stop(self):
         """Остановить воспроизведение."""
         if self.is_playing:
-            self.stopped.set()
+            self.break_loop.set()
+            self.play_next_song.set()
+            self.stopped = True
             self.player.stop()
-            self.player = None
-            self.bot.change_status(None)
 
     @commands.command(pass_context=True)
     async def play(self, ctx):
         """Начать воспроизведение песен из очереди."""
-        self.stopped.clear()
-        if self.player is not None:# and not self.stopped.is_set():
+        if self.player is not None and not self.stopped:
             if not self.is_playing:
                 await ctx.invoke(self.resume)
                 return
@@ -101,9 +103,7 @@ class Radio:
                 else:
                     await self.bot.say('Не выбран голосовой канал.')
                     return
-            
-            if self.stopped.is_set():
-                break
+    
             if self.q.empty():
                 await self.q.put(random.choice(self.songs))
             self.play_next_song.clear()
@@ -113,13 +113,14 @@ class Radio:
                 after=self.toggle_next_song,
                 #options="-loglevel debug -report",
                 headers = dict(self.bot.pycopy.session.headers))
-            #self.stopped.clear()
+            self.stopped = False
             self.player.start()
             song_name = unquote(self.current.split('/')[-1])
             await self.bot.change_status(discord.Game(name=song_name))
             
             await self.play_next_song.wait()
-        await self.bot.say('Leaving player loop')
+            if self.break_loop.is_set():
+                break
             
     @commands.command(aliases=['c'])
     async def current(self):
