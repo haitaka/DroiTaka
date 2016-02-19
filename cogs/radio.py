@@ -104,7 +104,6 @@ class Radio:
             
             if self.stopped.is_set():
                 break
-            s
             if self.q.empty():
                 await self.q.put(random.choice(self.songs))
             self.play_next_song.clear()
