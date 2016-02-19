@@ -118,6 +118,7 @@ class Radio:
             
             await self.play_next_song.wait()
             if self.break_loop.is_set():
+                self.break_loop.clear()
                 return
         await self.bot.say('Leaving play loop')
             
