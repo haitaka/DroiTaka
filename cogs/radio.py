@@ -4,6 +4,7 @@ from discord.ext import commands
 import discord.utils
 import random, json, asyncio
 from urllib.parse import unquote
+import os
 
 class Radio:
     """The radio-bot related commands."""
@@ -104,6 +105,7 @@ class Radio:
                 await self.q.put(random.choice(self.songs))
             self.play_next_song.clear()
             self.current = await self.q.get()
+            os.system("killall -9 ffmpeg")
             self.player = self.bot.voice.create_ffmpeg_player(
                 self.bot.pycopy.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song,
