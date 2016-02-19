@@ -80,6 +80,7 @@ class Radio:
         if self.is_playing:
             self.stopped.set()
             self.player.stop()
+            self.player = None
 
     @commands.command(pass_context=True)
     async def play(self, ctx):
