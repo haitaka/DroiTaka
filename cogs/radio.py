@@ -29,7 +29,6 @@ class Radio:
         return self.player is not None and self.player.is_playing() and not self.stopped.is_set()
         
     def toggle_next_song(self):
-        self.bot.loop.call_soon_threadsafe(self.bot.change_status(None))
         if not self.stopped.is_set():
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
@@ -81,6 +80,7 @@ class Radio:
             self.stopped.set()
             self.player.stop()
             self.player = None
+            self.bot.change_status(None)
 
     @commands.command(pass_context=True)
     async def play(self, ctx):
