@@ -6,12 +6,12 @@ import copy
 class RNG:
     """Utilities that provide pseudo-RNG."""
 
-    el_fractions = [['Дикие Ходоки', 'ходоки', 'ходукены', 'Wild Walkers'],
+    el_fractions = [['Дикие Ходоки', 'ходоки', 'Wild Walkers'],
                     ['Владыки праха', 'Сломленные Лорды', 'Broken Lords'],
                     ['Хранители', 'Vaulters'],
                     ['Некрофаги', 'Necrophages'],
-                    ['Неистовые маги', 'Ярые Маги', 'они слабы', 'Ardent Mages'],
-                    ['Кочующие Кланы', 'кочевники', 'Roving Clans'],
+                    ['Неистовые маги', 'маги', 'Ярые Маги', 'они слабы', 'Ardent Mages'],
+                    ['Кочующие Кланы', 'кланы', 'кочевники', 'Roving Clans'],
                     ['Драккены', 'Drakken'],
                     ['Культисты', 'Cultists'],
                     ['Забытые', 'Тени', 'Forgotten']]
