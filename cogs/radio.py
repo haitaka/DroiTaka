@@ -97,7 +97,7 @@ class Radio:
             if not self.bot.is_voice_connected():
                 author_channel = ctx.message.author.voice_channel
                 if author_channel is not None:
-                    await self.bot.say('Залетаю на {}.'.format(author_channel.name))
+                    print('Залетаю на {}.'.format(author_channel.name))
                     await ctx.invoke(self.join, channel_name=author_channel.name)
                 else:
                     await self.bot.say('Не выбран голосовой канал.')
@@ -110,7 +110,7 @@ class Radio:
             self.player = self.bot.voice.create_ffmpeg_player(
                 self.bot.pycopy.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song,
-                options="-loglevel debug -report",
+                #options="-loglevel debug -report",
                 headers = dict(self.bot.pycopy.session.headers))
             self.stopped = False
             self.player.start()
