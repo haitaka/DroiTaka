@@ -4,7 +4,9 @@ from discord.ext import commands
 import discord.utils
 import random, json, asyncio
 from urllib.parse import unquote
-import webdav.client as wdc
+
+import requests
+#import webdav.client as wdc
 
 class Radio:
     """The radio-bot related commands."""
@@ -24,9 +26,9 @@ class Radio:
         self.songs_dir = 'radio/'
         self.songs = []
         self.update_song_list()
-        self.yaclient = wdc.Client({'webdav_hostname': "https://webdav.yandex.ru",
-                                    'webdav_login': "haitaka@ya.ru",
-                                    'webdav_password': "iiteqoutoysazxam",})
+        #self.yaclient = wdc.Client({'webdav_hostname': "https://webdav.yandex.ru",
+        #                            'webdav_login': "haitaka@ya.ru",
+        #                            'webdav_password': "iiteqoutoysazxam",})
             
     @property
     def is_playing(self):
@@ -112,16 +114,17 @@ class Radio:
             self.play_next_song.clear()
             self.current = await self.q.get()
             
-            file = None
-            res = self.yaclient.resource("test.mp3")
-            res.write_to(file)
+            req = requests.request('GET', 'https://webdav.yandex.ru/test.mp3', auth=("haitaka@ya.ru","iiteqoutoysazxam"), headers={'Accept-Encoding': 'identity'})
+            #file = None
+            #res = self.yaclient.resource("test.mp3")
+            #res.write_to(file)
             #self.player = self.bot.voice.create_ffmpeg_player(
             #    self.bot.pycopy.direct_link(self.songs_dir + self.current),
             #    after=self.toggle_next_song,
             #    #options="-loglevel debug -report",
             #    headers = dict(self.bot.pycopy.session.headers))
             self.player = self.bot.voice.create_ffmpeg_player(
-                file,
+                req.raw,
                 after=self.toggle_next_song,
                 options="-loglevel debug -report",
                 pipe = True)
