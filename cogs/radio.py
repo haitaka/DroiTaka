@@ -120,7 +120,7 @@ class Radio:
             #res.write_to(file)
             self.player = self.bot.voice.create_ffmpeg_player(
                 #self.bot.pycopy.direct_link(self.songs_dir + self.current),
-                "https://webdav.yandex.ru/radio/test.mp3",# + self.current,
+                "https://webdav.yandex.ru/test.mp3",# + self.current,
                 after=self.toggle_next_song,
                 options="-loglevel debug -report",
                 #headers = dict(self.bot.pycopy.session.headers))
