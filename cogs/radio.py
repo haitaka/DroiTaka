@@ -114,7 +114,7 @@ class Radio:
             self.play_next_song.clear()
             self.current = await self.q.get()
             
-            req = requests.request('GET', 'https://webdav.yandex.ru/test.mp3', auth=("haitaka@ya.ru","iiteqoutoysazxam"), headers={'Accept-Encoding': 'identity'})
+            req = requests.request('GET', 'https://webdav.yandex.ru/test.mp3', auth=("haitaka@ya.ru","iiteqoutoysazxam"), headers={'Accept-Encoding': 'identity'}, stream=True)
             #file = None
             #res = self.yaclient.resource("test.mp3")
             #res.write_to(file)
