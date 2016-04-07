@@ -11,46 +11,29 @@ DOWNLOAD_URL = BASE_URL + '/download_object'  # TODO: should use /rest
 
 class Copy(object):
 
-	def __init__(self, username, password):
+	def __init__(self, token):
 		self.session = requests.session()
-		self.session.headers.update({'X-Client-Type': 'api',
-									 'X-Api-Version': '1',
-									 'User-Agent': USER_AGENT, })
-		self.authenticate(username, password)
+		self.session.headers.update({'Authentication': 'OAuth ' + str(token),})
+		
+	def get_token(self, key):
+		res = requests.post('http://oauth.yandex.ru/token', data = {
+			'grant_type': 'authorization_code',
+			'code': key,
+			'client_id': 'b12710fc26ee46ba82e34b97f08f2305',
+			'client_secret': '4ff2284115644e04acc77c54526364d2',
+			'device_id': '141f72b7-fd02-11e5-981a-00155d860f42',
+			'device_name': 'DroiTaka',
+		})
 
 	def _get(self, url, *args, **kwargs):
 		return self.session.get(url, *args, **kwargs)
 
 	def _post(self, url, data, *args, **kwargs):
-		return self.session.post(url, {'data': json.dumps(data), }, *args,
-								 **kwargs)
-
-	def authenticate(self, username, password):
-		response = self._post(AUTH_URL,
-							  {'username': username, 'password': password, })
-		json_response = response.json()
-		if 'auth_token' not in json_response:
-			raise ValueError("Error while authenticating")
-
-		self.user_data = json_response
-		self.auth_token = json_response['auth_token']
-		self.session.headers.update({'X-Authorization': self.auth_token, })
+		return self.session.post(url, {'data': json.dumps(data), }, *args, **kwargs)
 
 	def list_files(self, dir_path):
 		file_list = []
-		list_wtrmark = False
-		while (True):
-			response = self._post(OBJECTS_URL, {'path': dir_path, 'list_watermark': list_wtrmark, })
-			for file in response.json()['children']:
-				if file['type'] == 'file':
-					file_list.append(file['path'].split("/")[-1])
-					#print(file_list[-1])
-			list_wtrmark = response.json()['list_watermark']
-			#print(list_wtrmark)
-			#print(response.json())
-			if (response.json()['more_items'] == '0'):
-				#print('break')
-				break
+		json_res = self._https://cloud-api.yandex.net:443/v1/disk/resources?path=%2Fradio%2F
 		return file_list
 
 	def direct_link(self, file_path):
