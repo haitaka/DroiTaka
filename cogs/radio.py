@@ -114,20 +114,20 @@ class Radio:
             self.play_next_song.clear()
             self.current = await self.q.get()
             
-            req = requests.request('GET', 'https://webdav.yandex.ru/test.mp3', auth=("haitaka@ya.ru","iiteqoutoysazxam"), headers={'Accept-Encoding': 'identity'}, stream=True)
+            #req = requests.request('GET', 'https://webdav.yandex.ru/test.mp3', auth=("haitaka@ya.ru","iiteqoutoysazxam"), headers={'Accept-Encoding': 'identity'}, stream=True)
             #file = None
             #res = self.yaclient.resource("test.mp3")
             #res.write_to(file)
-            #self.player = self.bot.voice.create_ffmpeg_player(
-            #    self.bot.pycopy.direct_link(self.songs_dir + self.current),
-            #    after=self.toggle_next_song,
-            #    #options="-loglevel debug -report",
-            #    headers = dict(self.bot.pycopy.session.headers))
             self.player = self.bot.voice.create_ffmpeg_player(
-                req.raw,
+                self.bot.pycopy.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song,
-                options="-loglevel debug -report",
-                pipe = True)
+                #options="-loglevel debug -report",
+                headers = dict(self.bot.pycopy.session.headers))
+            #self.player = self.bot.voice.create_ffmpeg_player(
+            #    req.raw,
+            #    after=self.toggle_next_song,
+            #    options="-loglevel debug -report",
+            #    pipe = True)
             
             self.stopped = False
             self.player.start()
