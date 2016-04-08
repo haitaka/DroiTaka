@@ -33,7 +33,7 @@ class Radio:
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
-        self.songs = self.bot.pycopy.list_files(self.songs_dir)
+        self.songs = self.bot.yadisk.list_files(self.songs_dir)
     
     
     @commands.command(pass_context=True)
@@ -108,7 +108,7 @@ class Radio:
             self.play_next_song.clear()
             self.current = await self.q.get()
             self.player = self.bot.voice.create_ffmpeg_player(
-                self.bot.pycopy.direct_link(self.songs_dir + self.current),
+                self.bot.yadisk.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song)
                 #options="-loglevel debug -report",
                 #headers = dict(self.bot.pycopy.session.headers)
