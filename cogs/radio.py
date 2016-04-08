@@ -163,10 +163,10 @@ class Radio:
     @commands.command()
     async def searchsong(self, search_word : str):
         """Искать песню по названию."""
-        search_result = ""
+        search_result = "test\n"
         id = 1
         for song in self.songs:
-            if search_word in song:
+            if search_word.lower() in song.lower():
                 search_result += "{}. {}\n".format(id, song)
                 id += 1
                 if len(search_result) > 1800:
