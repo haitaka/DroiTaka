@@ -22,6 +22,7 @@ class Radio:
         self.current_song = None
         self.songs_dir = 'radio/'
         self.songs = []
+        self.playlists = {}
         self.update_song_list()
             
     @property
@@ -34,7 +35,13 @@ class Radio:
 
     def update_song_list(self):
         self.songs = self.bot.yadisk.list_files(self.songs_dir)
-    
+        self.update_playlists()
+        
+    def update_playlists(self):
+        pl_files = self.bot.yadisk.direct_link(self.songs_dir + 'playlists/' + pl)
+        for pl in pl_files:
+            pl_data = self.bot.yadisk.list_files(self.songs_dir + 'playlists')
+            self.playlists[pl].append(pl_data)
     
     @commands.command(pass_context=True)
     async def join(self, ctx, *, channel_name : str):
@@ -150,10 +157,28 @@ class Radio:
         await self.bot.say(song_list)
         
     @commands.command()
+    async def searchsong(self, search_word : str):
+        """Искать песню по названию."""
+        search_result = ""
+        id = 1
+        for song in self.songs:
+            if search_word in song:
+                search_result += "{}. {}\n".format(id, song)
+                id += 1
+                if len(search_result) > 1800:
+                    await self.bot.say(search_result)
+                    search_result = ''
+        await self.bot.say(search_result)
+        
+    @commands.command()
     async def add(self, song_num : int):
         """Добавить в конец очереди песню с данным номером."""
         await self.q.put(self.songs[song_num-1])
         await self.bot.say("{} будет следующей песенкой".format(self.songs[song_num-1]))
             
+    @commands.group(pass_context=True, aliases=['pl'])
+    async def playlist(self):
+        return
+        
 def setup(bot):
     bot.add_cog(Radio(bot))
