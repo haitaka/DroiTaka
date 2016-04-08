@@ -17,7 +17,7 @@ class YaDisk(object):
 		return format_url.format(CLIENT_ID, DEVICE_ID, DEVICE_NAME)
 		
 	def get_token(key):
-		res = requests.post('http://oauth.yandex.ru/token', data = {
+		res = requests.post('https://oauth.yandex.ru/token', data = {
 			'grant_type': 'authorization_code',
 			'code': key,
 			'client_id': CLIENT_ID,
