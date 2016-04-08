@@ -35,17 +35,17 @@ class Radio:
 
     def update_song_list(self):
         self.songs = self.bot.yadisk.list_files(self.songs_dir)
-        self.update_playlists()
+    #    self.update_playlists()
         
-    def update_playlists(self):
-        pl_files = self.bot.yadisk.list_files(self.songs_dir + 'playlists/')
-        for pl in pl_files:
-            pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists' + pl)
-            pl_data = self.bot.yadisk._get(pl_url).json()['songs']
-            self.playlists[pl] = []
-            for song in pl_data:
-                if song in self.songs:
-                    self.playlists[pl].append(song)
+    #def update_playlists(self):
+    #    pl_files = self.bot.yadisk.list_files(self.songs_dir + 'playlists/')
+    #    for pl in pl_files:
+    #        pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists' + pl)
+    #        pl_data = self.bot.yadisk._get(pl_url).json()['songs']
+    #        self.playlists[pl] = []
+    #        for song in pl_data:
+    #            if song in self.songs:
+    #                self.playlists[pl].append(song)
     
     @commands.command(pass_context=True)
     async def join(self, ctx, *, channel_name : str):
