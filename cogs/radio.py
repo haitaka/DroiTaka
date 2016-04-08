@@ -160,7 +160,7 @@ class Radio:
                 song_list = ''
         await self.bot.say(song_list)
         
-    @commands.command()
+    @commands.command(aliases=['ss'])
     async def searchsong(self, search_word : str):
         """Искать песню по названию."""
         search_result = ""
