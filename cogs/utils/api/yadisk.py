@@ -43,7 +43,11 @@ class YaDisk(object):
 	def list_files(self, dir_path):
 		file_list = []
 		res = self._get("https://cloud-api.yandex.net:443/v1/disk/resources", 
-		                params={"path": "app:/" + dir_path,})
+		                params={"path": "app:/" + dir_path,
+		                        "limit": "0",})
+		res = self._get("https://cloud-api.yandex.net:443/v1/disk/resources", 
+		                params={"path": "app:/" + dir_path,
+		                        "limit": res.json()['_embedded']['total']})
 		for file in res.json()['_embedded']['items']:
 			if file['type'] == 'file':
 				file_list.append(file['name'])
