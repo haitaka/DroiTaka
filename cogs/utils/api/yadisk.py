@@ -47,7 +47,7 @@ class YaDisk(object):
 		return file_list
 
 	def direct_link(self, file_path):
-		response = self.session._get("https://cloud-api.yandex.net:443/v1/disk/resources/download", 
-		                             params={"path": "app:/" + file_path,})
+		response = self._get("https://cloud-api.yandex.net:443/v1/disk/resources/download", 
+		                     params={"path": "app:/" + file_path,})
 		return response.json()['href']
 		
