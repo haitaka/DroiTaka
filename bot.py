@@ -5,7 +5,7 @@ import datetime, re
 import json, asyncio
 import copy
 import os, sys
-from cogs.utils.api.pycopy import Copy
+from cogs.utils.api.yadisk import YaDisk
 
 description = """
 Hello! I am a bot written by Haitaka to provide some nice utilities.
@@ -177,5 +177,5 @@ def load_credentials():
 
 if __name__ == '__main__':
     credentials = load_credentials()
-    bot.pycopy = Copy(credentials['copy_login'], credentials['copy_passwd'])
+    bot.yadisk = YaDisk(credentials['yadisk_token'])
     bot.run(credentials['login'], credentials['passwd'])
