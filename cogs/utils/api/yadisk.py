@@ -12,7 +12,7 @@ class YaDisk(object):
 		self.session = requests.session()
 		self.session.headers.update({'Authentication': 'OAuth ' + str(token),})
 		
-	def gat_key_url():
+	def get_key_url():
 		format_url = "https://oauth.yandex.ru/authorize?response_type=code&client_id={}&device_id={}&device_name={}&force_confirm=yes"
 		return format_url.format(CLIENT_ID, DEVICE_ID, DEVICE_NAME)
 		
