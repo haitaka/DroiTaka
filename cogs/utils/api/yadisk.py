@@ -35,6 +35,9 @@ class YaDisk(object):
 
 	def _post(self, url, data, *args, **kwargs):
 		return self.session.post(url, {'data': json.dumps(data), }, *args, **kwargs)
+		
+	def _put(self, url, *args, **kwargs):
+		return self.session.put(url, *args, **kwargs)
 
 
 	def list_files(self, dir_path):
@@ -50,4 +53,14 @@ class YaDisk(object):
 		response = self._get("https://cloud-api.yandex.net:443/v1/disk/resources/download", 
 		                     params={"path": "app:/" + file_path,})
 		return response.json()['href']
+
+	def upload(self, file_path, file):
+		response = self._get("https://cloud-api.yandex.net:443/v1/disk/resources/upload", 
+		                     params={"path": "app:/" + file_path,
+		                             "overwrite": "true",})
+		try:
+			upload_url = response['href']
+			self._put(upload_url, data = file)
+		except:
+			print('upload error')
 		
