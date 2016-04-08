@@ -165,13 +165,17 @@ class Radio:
         """Искать песню по названию."""
         search_result = ""
         id = 1
+        found = False
         for song in self.songs:
             if search_word.lower() in song.lower():
+                found = True
                 search_result += "{}. {}\n".format(id, song)
                 if len(search_result) > 1800:
                     await self.bot.say(search_result)
                     search_result = ''
             id += 1
+        if not found:
+            search_result = "Нет такой песни."
         await self.bot.say(search_result)
         
     @commands.command()
