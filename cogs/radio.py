@@ -1,5 +1,3 @@
-# coding: utf-8
-
 from .utils import config, checks, formats
 import discord
 from discord.ext import commands
