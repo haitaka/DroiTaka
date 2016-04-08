@@ -26,9 +26,6 @@ class Radio:
         self.songs_dir = 'radio/'
         self.songs = []
         self.update_song_list()
-        #self.yaclient = wdc.Client({'webdav_hostname': "https://webdav.yandex.ru",
-        #                            'webdav_login': "haitaka@ya.ru",
-        #                            'webdav_password': "iiteqoutoysazxam",})
             
     @property
     def is_playing(self):
@@ -39,7 +36,7 @@ class Radio:
             self.bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
     def update_song_list(self):
-        self.songs = self.bot.pycopy.list_files(self.songs_dir)
+        self.songs = self.bot.yadisk.list_files(self.songs_dir)
     
     
     @commands.command(pass_context=True)
@@ -113,24 +110,12 @@ class Radio:
                 await self.q.put(random.choice(self.songs))
             self.play_next_song.clear()
             self.current = await self.q.get()
-            
-            #req = requests.request('GET', 'https://webdav.yandex.ru/test.mp3', auth=("haitaka@ya.ru","iiteqoutoysazxam"), headers={'Accept-Encoding': 'identity'}, stream=True)
-            #file = None
-            #res = self.yaclient.resource("test.mp3")
-            #res.write_to(file)
             self.player = self.bot.voice.create_ffmpeg_player(
-                self.bot.pycopy.direct_link(self.songs_dir + self.current),
-                #"https://webdav.yandex.ru/radio/" + self.current,
+                self.bot.yadisk.direct_link(self.songs_dir + self.current),
                 after=self.toggle_next_song,
                 #options="-loglevel debug -report",
-                headers = dict(self.bot.pycopy.session.headers))
-                #headers = {"Authorization": "Basic aGFpdGFrYUB5YS5ydTppaXRlcW91dG95c2F6eGFt"})
-            #self.player = self.bot.voice.create_ffmpeg_player(
-            #    req.raw,
-            #    after=self.toggle_next_song,
-            #    options="-loglevel debug -report",
-            #    pipe = True)
-            
+                #headers = dict(self.bot.pycopy.session.headers,
+                ))
             self.stopped = False
             self.player.start()
             song_name = unquote(self.current.split('/')[-1])
