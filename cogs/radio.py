@@ -5,9 +5,6 @@ import discord.utils
 import random, json, asyncio
 from urllib.parse import unquote
 
-import requests
-#import webdav.client as wdc
-
 class Radio:
     """The radio-bot related commands."""
 
@@ -115,7 +112,7 @@ class Radio:
                 after=self.toggle_next_song,
                 #options="-loglevel debug -report",
                 #headers = dict(self.bot.pycopy.session.headers,
-                ))
+                )
             self.stopped = False
             self.player.start()
             song_name = unquote(self.current.split('/')[-1])
