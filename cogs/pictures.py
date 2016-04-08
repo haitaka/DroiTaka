@@ -13,7 +13,7 @@ class Pic:
         self.update_pics()
         
     def update_pics(self):
-        file_list = self.bot.pycopy.list_files(self.pic_dir)
+        file_list = self.bot.yadisk.list_files(self.pic_dir)
         for file_name in file_list:
             self.pic_dict[file_name.split('.')[0].lower()] = unquote(file_name)
         self.pic.aliases = list(self.pic_dict)
@@ -22,7 +22,7 @@ class Pic:
     async def pic(self, ctx):
         """База картинок, мемесов etc."""
         if ctx.invoked_with in self.pic_dict:
-            file = self.bot.pycopy.get_file(self.pic_dir + self.pic_dict[ctx.invoked_with])
+            file = self.bot.yadisk.get_file(self.pic_dir + self.pic_dict[ctx.invoked_with])
             await self.bot.upload(file, self.pic_dict[ctx.invoked_with])
         elif ctx.invoked_subcommand is None:
             msg = copy.copy(ctx.message)
