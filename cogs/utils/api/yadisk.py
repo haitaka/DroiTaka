@@ -25,7 +25,7 @@ class YaDisk(object):
 			'device_id': DEVICE_ID,
 			'device_name': DEVICE_NAME,
 		})
-		print(res.json())
+		print(res.text)
 		return res.json()['access_token']
 
 	def _get(self, url, *args, **kwargs):
