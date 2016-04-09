@@ -176,6 +176,10 @@ def load_credentials():
     with open('credentials.json') as f:
         return json.load(f)
 
+#def load_yadisk_data():
+#    with open('yadisk_cred.json') as f:
+#        return json.load(f)
+
 if __name__ == '__main__':
     credentials = load_credentials()
     bot.yadisk = YaDisk(credentials['yadisk_token'])

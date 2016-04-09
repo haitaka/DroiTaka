@@ -3,29 +3,24 @@
 import json
 import requests
 
-DEVICE_ID = '141f72b7-fd02-11e5-981a-00155d860f42'
-DEVICE_NAME = 'DroiTaka'
-CLIENT_ID = 'b12710fc26ee46ba82e34b97f08f2305'
-CLIENT_SECRET = '4ff2284115644e04acc77c54526364d2'
-
 class YaDisk(object):
 
 	def __init__(self, token):
 		self.session = requests.session()
 		self.session.headers.update({'Authorization': 'OAuth ' + str(token),})
 		
-	def get_key_url():
+	def get_key_url(client_data):
 		format_url = "https://oauth.yandex.ru/authorize?response_type=code&client_id={}&device_id={}&device_name={}&force_confirm=yes"
-		return format_url.format(CLIENT_ID, DEVICE_ID, DEVICE_NAME)
+		return format_url.format(client_data['client_id'], client_data['device_id'], client_data['device_name'])
 		
-	def get_token(key):
+	def get_token(key, client_data):
 		res = requests.post('https://oauth.yandex.ru/token', data = {
 			'grant_type': 'authorization_code',
 			'code': key,
-			'client_id': CLIENT_ID,
-			'client_secret': CLIENT_SECRET,
-			'device_id': DEVICE_ID,
-			'device_name': DEVICE_NAME,
+			'client_id': client_data['client_id'],
+			'client_secret': client_data['client_secret'],
+			'device_id': client_data['device_id'],
+			'device_name': client_data['deivce_name'],
 		})
 		print(res.text)
 		return res.json()['access_token']
