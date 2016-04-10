@@ -14,7 +14,9 @@ class RNG:
                     ['Кочующие Кланы', 'кланы', 'кочевники', 'Roving Clans'],
                     ['Драккены', 'Drakken'],
                     ['Культисты', 'Cultists'],
-                    ['Забытые', 'Тени', 'Forgotten']]
+                    ['Забытые', 'Тени', 'Forgotten'],
+                    ['Мезари', 'Бездари', 'Mezari'],
+                    ['Аллаи', 'Оборотни', 'Allayi']]
 
     def __init__(self, bot):
         self.bot = bot
