@@ -194,6 +194,8 @@ class Radio:
     @commands.group(pass_context=True, aliases=['pl'])
     async def playlist(self, ctx):
         """Показать плейлисты."""
+        await self.bot.say(ctx.invoked_subcommand)
+        await self.bot.say(len(self.playlists))
         if ctx.invoked_subcommand is False and len(self.playlists) > 0:
             for playlist in self.playlists:
                 to_print = ""
@@ -217,7 +219,7 @@ class Radio:
         for arg in args:
             if arg.strip().isdigit():
                 if int(arg) in range(1, len(self.songs) + 1):
-                    song_name = self.songs[song-1]
+                    song_name = self.songs[int(arg)-1]
                     to_add.append(song_name)
             elif arg in self.playlists:
                 self.playlists[arg] += to_add
