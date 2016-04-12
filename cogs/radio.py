@@ -59,7 +59,7 @@ class Radio:
             await self.bot.say('Нет такого голосового канала.')
         await self.bot.join_voice_channel(channel)
         
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['у', 'уёбывай', 'уходи'])
     async def leave(self, ctx):
         """Покинуть текущий голосовой канал."""
         await ctx.invoke(self.stop)
