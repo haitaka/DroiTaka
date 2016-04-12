@@ -193,22 +193,66 @@ class Radio:
             
     @commands.group(pass_context=True, aliases=['pl'])
     async def playlist(self, ctx):
-        """Показать плейлист."""
-        await self.bot.say(self.playlists)
+        """Показать плейлисты."""
+        if ctx.invoked_subcommand is False and len(self.playlists) > 0:
+            for playlist in self.playlists:
+                to_print = ""
+                id = 1
+                for song in self.songs:
+                    to_print += "{}. {}\n".format(id, song)
+                    id += 1
+                    if len(to_print) > 1800:
+                        await self.bot.say(to_print)
+                        to_print = ''
+                await self.bot.say(to_print)
+                
     
-    @playlist.command(pass_context=True, aliases=['add'])
-    async def pl_add(self, ctx, song : int, playlist : str):
-        """Добавить песенку в плейлист."""
-        if not playlist in self.playlists:
-            self.playlists[playlist] = []
-        try:
-            song_name = self.songs[song-1]
-        except:
-            await self.bot.say('Нет такой песенки')
-            return
-        self.playlists[playlist].append(song_name)
-        pl_json = {'name': playlist, 'songs': self.playlists[playlist]}
-        self.bot.yadisk.upload(self.songs_dir + 'playlists/' + playlist + '.json', json.dumps(pl_json))
+    @playlist.command(pass_context=True, name='add')
+    async def pl_add(self, ctx, *args):
+        """Добавить песенки в плейлист.
+        
+        !playlist add {song} {song} ... {playlist}
+        """
+        to_add = []
+        for arg in args:
+            if arg.strip().isdigit():
+                if int(arg) in range(1, len(self.songs) + 1):
+                    song_name = self.songs[song-1]
+                    to_add.append(song_name)
+            elif arg in self.playlists:
+                self.playlists[arg] += to_add
+                pl_json = {'name': arg, 'songs': self.playlists[arg]}
+                self.bot.yadisk.upload(self.songs_dir + 'playlists/' + arg + '.json', json.dumps(pl_json))
+                await self.bot.say('Плейлист {} обновлён.'.format(arg))
+                to_add = []
+                
+    @playlist.command(name = 'new')
+    async def pl_new(self, name : str):
+        """Создать новый плейлист. 
+        (Имя не должно содержать пробелов. Имя не может быть числом.)
+        """
+        name = name.strip().split(' ')[0]
+        self.playlists[name] = []
+        await self.bot.say('Плейлист {} создан.'.format(name))
+        
+    @playlist.command(name = 'show')
+    async def pl_show(self, name : str):
+        """Показать плейлист."""
+        name = name.strip().split(' ')[0]
+        if name in self.playlists:
+            song_list = ""
+            for song in self.playlists[name]:
+                try:
+                    id = self.songs.index(song) + 1
+                except:
+                    await self.bot.say('Плейлист {} повреждён.'.format(name))
+                song_list += "{}. {}\n".format(id, song)
+                if len(song_list) > 1800:
+                    await self.bot.say(song_list)
+                    song_list = ''
+            await self.bot.say(song_list)
+        else:
+            await self.bot.say('Нет такого плейлиста.')
         
 def setup(bot):
     bot.add_cog(Radio(bot))
