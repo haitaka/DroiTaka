@@ -179,17 +179,26 @@ class Radio:
         await self.bot.say(search_result)
         
     @commands.command()
-    async def add(self, song_num : int):
-        """Добавить в конец очереди песню с данным номером."""
-        await self.q.put(self.songs[song_num-1])
-        await self.bot.say("{} будет следующей песенкой".format(self.songs[song_num-1]))
+    async def add(self, value : str):
+        """Добавить в конец очереди песню или плейлист."""
+        if value.strip().isdigit():
+            await self.q.put(self.songs[value-1])
+            await self.bot.say("{} добавлена в конец очереди".format(self.songs[value-1]))
+        elif value in self.playlists:
+            for song in self.playlists[value]:
+                await self.q.put(song)
+            await self.bot.say("Плейлист добавлен в конец очереди.")
+        else:
+            await self.bot.say("Нет такой песенки.")
             
     @commands.group(pass_context=True, aliases=['pl'])
     async def playlist(self, ctx):
+        """Показать плейлист."""
         await self.bot.say(self.playlists)
     
     @playlist.command(pass_context=True, aliases=['add'])
     async def pl_add(self, ctx, song : int, playlist : str):
+        """Добавить песенку в плейлист."""
         if not playlist in self.playlists:
             self.playlists[playlist] = []
         try:
@@ -199,7 +208,7 @@ class Radio:
             return
         self.playlists[playlist].append(song_name)
         pl_json = {'name': playlist, 'songs': self.playlists[playlist]}
-        self.bot.yadisk.upload(self.songs_dir + 'playlists' + playlist, json.dumps(pl_json))
+        self.bot.yadisk.upload(self.songs_dir + 'playlists/' + playlist, json.dumps(pl_json) + '.json')
         
 def setup(bot):
     bot.add_cog(Radio(bot))
