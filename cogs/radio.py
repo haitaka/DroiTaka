@@ -208,7 +208,7 @@ class Radio:
             return
         self.playlists[playlist].append(song_name)
         pl_json = {'name': playlist, 'songs': self.playlists[playlist]}
-        self.bot.yadisk.upload(self.songs_dir + 'playlists/' + playlist, json.dumps(pl_json) + '.json')
+        self.bot.yadisk.upload(self.songs_dir + 'playlists/' + playlist + '.json', json.dumps(pl_json))
         
 def setup(bot):
     bot.add_cog(Radio(bot))
