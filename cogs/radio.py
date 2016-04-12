@@ -195,16 +195,15 @@ class Radio:
     async def playlist(self, ctx):
         """Показать плейлисты."""
         if ctx.invoked_subcommand is None and len(self.playlists) > 0:
+            to_print = ""
+            id = 1
             for playlist in self.playlists:
-                to_print = ""
-                id = 1
-                for song in self.songs:
-                    to_print += "{}. {}\n".format(id, song)
-                    id += 1
-                    if len(to_print) > 1800:
-                        await self.bot.say(to_print)
-                        to_print = ''
-                await self.bot.say(to_print)
+                to_print += "{}. {}\n".format(id, playlist)
+                id += 1
+                if len(to_print) > 1800:
+                    await self.bot.say(to_print)
+                    to_print = ''
+            await self.bot.say(to_print)
                 
     
     @playlist.command(pass_context=True, name='add')
