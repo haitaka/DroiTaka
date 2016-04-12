@@ -190,13 +190,15 @@ class Radio:
     
     @playlist.command(pass_context=True, aliases=['add'])
     async def pl_add(self, ctx, song : int, playlist : str):
+        await self.bot.say('adding {} to {}'.format(song, playlist))
         if not playlist in self.playlists:
             self.playlists[playlist] = {}
         try:
-            self.playlists[playlist].append(self.songs[song-1])
+            song_name = self.songs[song-1]
         except:
             await self.bot.say('Нет такой песенки')
             return
+        self.playlists[playlist].append(song_name)
         pl_json = {'name': playlist, 'songs': self.playlists[playlist]}
         self.bot.yadisk.upload(self.songs_dir + 'playlists' + playlist, json.dumps(pl_json))
         
