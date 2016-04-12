@@ -58,7 +58,7 @@ class YaDisk(object):
 		                     params={"path": "app:/" + file_path,
 		                             "overwrite": "true",})
 		try:
-			upload_url = response['href']
+			upload_url = response.json()['href']
 			self._put(upload_url, data = file)
 		except:
 			print('upload error')
