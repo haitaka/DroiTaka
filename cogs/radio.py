@@ -182,8 +182,8 @@ class Radio:
     async def add(self, value : str):
         """Добавить в конец очереди песню или плейлист."""
         if value.strip().isdigit():
-            await self.q.put(self.songs[value-1])
-            await self.bot.say("{} добавлена в конец очереди".format(self.songs[value-1]))
+            await self.q.put(self.songs[int(value.strip())-1])
+            await self.bot.say("{} добавлена в конец очереди".format(self.songs[int(value.strip())-1]))
         elif value in self.playlists:
             for song in self.playlists[value]:
                 await self.q.put(song)
