@@ -186,13 +186,17 @@ class Radio:
             
     @commands.group(pass_context=True, aliases=['pl'])
     async def playlist(self):
-        return
+        await self.bot.say(self.playlists)
     
-    @playlist.command()
-    async def add(self, playlist : str, song : str):
+    @playlist.command(aliases=['add'])
+    async def pl_add(self, song : int, playlist : str):
         if not playlist in self.playlists:
             await ctx.invoke(self.new, playlist=playlist)
-        self.playlists[playlist].append(song)
+        try:
+            self.playlists[playlist].append(self.songs[song-1])
+        except:
+            await self.bot.say('Нет такой песенки')
+            return
         pl_json = {'name': playlist, 'songs': self.playlists[playlist]}
         self.bot.yadisk.upload(self.songs_dir + 'playlists' + playlist, json.dumps(pl_json))
         
