@@ -35,17 +35,17 @@ class Radio:
 
     def update_song_list(self):
         self.songs = self.bot.yadisk.list_files(self.songs_dir)
-    #    self.update_playlists()
+        self.update_playlists()
         
-    #def update_playlists(self):
-    #    pl_files = self.bot.yadisk.list_files(self.songs_dir + 'playlists/')
-    #    for pl in pl_files:
-    #        pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists' + pl)
-    #        pl_data = self.bot.yadisk._get(pl_url).json()['songs']
-    #        self.playlists[pl] = []
-    #        for song in pl_data:
-    #            if song in self.songs:
-    #                self.playlists[pl].append(song)
+    def update_playlists(self):
+        pl_files = self.bot.yadisk.list_files(self.songs_dir + 'playlists/')
+        for pl in pl_files:
+            pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists' + pl)
+            pl_data = self.bot.yadisk._get(pl_url).json()['songs']
+            self.playlists[pl] = []
+            for song in pl_data:
+                if song in self.songs:
+                    self.playlists[pl].append(song)
     
     @commands.command(pass_context=True)
     async def join(self, ctx, *, channel_name : str):
@@ -184,16 +184,17 @@ class Radio:
         await self.q.put(self.songs[song_num-1])
         await self.bot.say("{} будет следующей песенкой".format(self.songs[song_num-1]))
             
-    #@commands.group(pass_context=True, aliases=['pl'])
-    #async def playlist(self):
-    #    return
+    @commands.group(pass_context=True, aliases=['pl'])
+    async def playlist(self):
+        return
     
-    #@playlist.command()
-    #async def add(self, playlist : str, song : str):
-    #    if not playlist in self.playlists:
-    #        await ctx.invoke(self.new, playlist=playlist)
-    #    self.playlists[playlist].append(song)
-    #    self.bot.yadisk.upload(self.songs_dir + 'playlists' + playlist, self.playlists[playlist])
+    @playlist.command()
+    async def add(self, playlist : str, song : str):
+        if not playlist in self.playlists:
+            await ctx.invoke(self.new, playlist=playlist)
+        self.playlists[playlist].append(song)
+        pl_json = {'name': playlist, 'songs': self.playlists[playlist]}
+        self.bot.yadisk.upload(self.songs_dir + 'playlists' + playlist, json.dumps(pl_json))
         
 def setup(bot):
     bot.add_cog(Radio(bot))
