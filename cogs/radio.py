@@ -185,13 +185,13 @@ class Radio:
         await self.bot.say("{} будет следующей песенкой".format(self.songs[song_num-1]))
             
     @commands.group(pass_context=True, aliases=['pl'])
-    async def playlist(self):
+    async def playlist(self, ctx):
         await self.bot.say(self.playlists)
     
-    @playlist.command(aliases=['add'])
-    async def pl_add(self, song : int, playlist : str):
-        if not playlist in self.playlists:
-            await ctx.invoke(self.new, playlist=playlist)
+    @playlist.command(pass_context=True, aliases=['add'])
+    async def pl_add(self, ctx, song : int, playlist : str):
+        #if not playlist in self.playlists:
+        #    await ctx.invoke(self.new, playlist=playlist)
         try:
             self.playlists[playlist].append(self.songs[song-1])
         except:
