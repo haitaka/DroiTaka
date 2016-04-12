@@ -190,9 +190,8 @@ class Radio:
     
     @playlist.command(pass_context=True, aliases=['add'])
     async def pl_add(self, ctx, song : int, playlist : str):
-        await self.bot.say('adding {} to {}'.format(song, playlist))
         if not playlist in self.playlists:
-            self.playlists[playlist] = {}
+            self.playlists[playlist] = []
         try:
             song_name = self.songs[song-1]
         except:
