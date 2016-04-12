@@ -196,7 +196,7 @@ class Radio:
         """Показать плейлисты."""
         await self.bot.say(ctx.invoked_subcommand)
         await self.bot.say(len(self.playlists))
-        if ctx.invoked_subcommand is False and len(self.playlists) > 0:
+        if ctx.invoked_subcommand is None and len(self.playlists) > 0:
             for playlist in self.playlists:
                 to_print = ""
                 id = 1
