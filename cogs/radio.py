@@ -40,7 +40,7 @@ class Radio:
     def update_playlists(self):
         pl_files = self.bot.yadisk.list_files(self.songs_dir + 'playlists/')
         for pl in pl_files:
-            pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists' + pl)
+            pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists/' + pl)
             pl_data = self.bot.yadisk._get(pl_url).json()['songs']
             self.playlists[pl] = []
             for song in pl_data:
