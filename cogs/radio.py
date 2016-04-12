@@ -194,8 +194,6 @@ class Radio:
     @commands.group(pass_context=True, aliases=['pl'])
     async def playlist(self, ctx):
         """Показать плейлисты."""
-        await self.bot.say(ctx.invoked_subcommand)
-        await self.bot.say(len(self.playlists))
         if ctx.invoked_subcommand is None and len(self.playlists) > 0:
             for playlist in self.playlists:
                 to_print = ""
