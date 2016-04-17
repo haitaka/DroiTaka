@@ -42,10 +42,10 @@ class Radio:
         for pl in pl_files:
             pl_url = self.bot.yadisk.direct_link(self.songs_dir + 'playlists/' + pl)
             pl_data = self.bot.yadisk._get(pl_url).json()['songs']
-            self.playlists[pl] = []
+            self.playlists[pl.split('.json')[0]] = []
             for song in pl_data:
                 if song in self.songs:
-                    self.playlists[pl].append(song)
+                    self.playlists[pl.split('.json')[0]].append(song)
     
     @commands.command(pass_context=True)
     async def join(self, ctx, *, channel_name : str):
@@ -198,7 +198,7 @@ class Radio:
             to_print = ""
             id = 1
             for playlist in self.playlists:
-                to_print += "{}. {}\n".format(id, playlist.split('.json')[0])
+                to_print += "{}. {}\n".format(id, playlist)
                 id += 1
                 if len(to_print) > 1800:
                     await self.bot.say(to_print)
