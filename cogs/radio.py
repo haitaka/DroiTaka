@@ -270,11 +270,13 @@ class Radio:
                 if author_channel is not None:
                     print('Joining {}.'.format(author_channel.name))
                     await ctx.invoke(self.join, channel_name=author_channel.name)
+                    print('pizda')
                 else:
                     await self.bot.say('Не выбран голосовой канал.')
                     return
                 
             print(song)
+            print('xyu')
             self.play_next_song.clear()
             self.player = self.bot.voice.create_ffmpeg_player(song['url'], after=self.toggle_next_song)
             self.stopped = False
