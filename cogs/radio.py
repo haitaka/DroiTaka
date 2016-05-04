@@ -57,7 +57,9 @@ class Radio:
         channel = discord.utils.find(check, ctx.message.server.channels)
         if channel is None:
             await self.bot.say('Нет такого голосового канала.')
+        print('test0')
         await self.bot.join_voice_channel(channel)
+        print('test1')
         
     @commands.command(pass_context=True, aliases=['у', 'уёбывай', 'уходи'])
     async def leave(self, ctx):
