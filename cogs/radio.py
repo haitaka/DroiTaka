@@ -264,7 +264,6 @@ class Radio:
             return
             
         queue = self.bot.vkaudio.get_by_url(url)
-        print(queue)
         for song in queue:
             if not self.bot.is_voice_connected():
                 author_channel = ctx.message.author.voice_channel
@@ -276,6 +275,7 @@ class Radio:
                     return
                 
             self.play_next_song.clear()
+            print(song)
             self.player = self.bot.voice.create_ffmpeg_player(song['url'], after=self.toggle_next_song)
             self.stopped = False
             self.player.start()
