@@ -16,7 +16,6 @@ class VkAudio(object):
 		name = url.split("/")[-1]
 		user_res = self._get("https://api.vk.com/method/users.get", 
 		                     params={"user_ids": name, "fields": "id",}).json()
-		print(user_res)
 		if 'error' not in user_res:
 			return self.get_user_audio(user_res['response'][0]['id'])
 			
