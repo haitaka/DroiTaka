@@ -64,6 +64,7 @@ class Radio:
         """Покинуть текущий голосовой канал."""
         await ctx.invoke(self.stop)
         await self.bot.voice.disconnect()
+        await self.bot.change_status(None)
         
     @commands.command()
     async def pause(self):
@@ -252,6 +253,39 @@ class Radio:
             await self.bot.say(song_list)
         else:
             await self.bot.say('Нет такого плейлиста.')
+           
+            
+    @commands.command(pass_context=True)
+    async def playvk(self, ctx, url : str):
+        """Начать воспроизведение аудио со страницы группы 
+        или пользователя vk.com."""
+        if self.player is not None and not self.stopped:
+            await self.bot.say('Уже играю песенку.')
+            return
+            
+        queue = self.bot.vkaudio.get_by_url(url)
+        for song in queue:
+            if not self.bot.is_voice_connected():
+                author_channel = ctx.message.author.voice_channel
+                if author_channel is not None:
+                    print('Joining {}.'.format(author_channel.name))
+                    await ctx.invoke(self.join, channel_name=author_channel.name)
+                else:
+                    await self.bot.say('Не выбран голосовой канал.')
+                    return
+                
+            self.play_next_song.clear()
+            self.player = self.bot.voice.create_ffmpeg_player(song['url'], after=self.toggle_next_song)
+            self.stopped = False
+            self.player.start()
+            song_name = song["artist"] + " " + song["title"]
+            await self.bot.change_status(discord.Game(name=song_name))
+            
+            await self.play_next_song.wait()
+            if self.break_loop.is_set():
+                self.break_loop.clear()
+                return
+        await self.bot.say('Leaving play loop')
         
 def setup(bot):
     bot.add_cog(Radio(bot))
