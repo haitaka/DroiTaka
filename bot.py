@@ -7,7 +7,7 @@ import copy
 import os, sys
 from cogs.utils.api.pycopy import Copy
 from cogs.utils.api.yadisk import YaDisk
-from cogs.utils.api.pycopy import VkAudio
+from cogs.utils.api.vkaudio import VkAudio
 
 description = """
 Hello! I am a bot written by Haitaka to provide some nice utilities.
