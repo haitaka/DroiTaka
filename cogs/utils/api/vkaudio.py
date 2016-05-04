@@ -7,7 +7,7 @@ class VkAudio(object):
 
 	def __init__(self, token):
 		self.session = requests.session()
-		self.session.params = {'access_token': token, }
+		self.session.params = {'access_token': token, 'v': '5.52',}
 
 	def _get(self, url, *args, **kwargs):
 		return self.session.get(url, *args, **kwargs)
