@@ -274,8 +274,8 @@ class Radio:
                     await self.bot.say('Не выбран голосовой канал.')
                     return
                 
-            self.play_next_song.clear()
             print(song)
+            self.play_next_song.clear()
             self.player = self.bot.voice.create_ffmpeg_player(song['url'], after=self.toggle_next_song)
             self.stopped = False
             self.player.start()
