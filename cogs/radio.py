@@ -264,6 +264,7 @@ class Radio:
             return
             
         queue = self.bot.vkaudio.get_by_url(url)
+        print(queue)
         for song in queue:
             if not self.bot.is_voice_connected():
                 author_channel = ctx.message.author.voice_channel
