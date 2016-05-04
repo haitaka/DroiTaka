@@ -4,23 +4,18 @@ A personal bot that runs on Discord.
 
 ## Running
 `depricated`
-You should only need two main configuration files while the rest will be created automatically.
+You should only need configuration file while the rest will be created automatically.
 
-First is a credentials.json file with the credentials:
+credentials.json file with the credentials:
 
-```js
+```json
 {
-    "email": "myemail@gmail.com",
-    "password": "mypassword"
-}
-```
+    "login": "",
+    "passwd": "",
+    "copy_login": "",
+    "copy_passwd": "",
+    "yadisk_token": ""
 
-Second is copy_cred.json file with `copy.com` file-storage credentials:
-
-```js
-{
-    "login": "myemail@gmail.com",
-    "passwd": "mypassword"
 }
 ```
 
