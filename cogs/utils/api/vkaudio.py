@@ -51,6 +51,6 @@ class VkAudio(object):
 		for song in data:
 			result.append({'artist': song['artist'],
 			               'title': song['title'],
-			               'url',: song['url'],})
+			               'url': song['url'],})
 		return result
 		
