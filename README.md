@@ -1,6 +1,7 @@
 ## DroiTaka
-
 A personal bot that runs on Discord.
+
+Sorry for that commit messages. Currently I've no other way to debugig.
 
 ## Running
 `depricated`
