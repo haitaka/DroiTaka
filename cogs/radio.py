@@ -189,7 +189,7 @@ class Radio:
     async def current(self):
         """Что там играет?"""
         if self.is_playing:
-            song_name = self.current.artist + ' ' + self.current.title
+            song_name = self.current.artist + ' - ' + self.current.title
             await self.bot.say(song_name)
 
     @commands.command()
