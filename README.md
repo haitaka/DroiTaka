@@ -5,7 +5,6 @@ A personal bot that runs on Discord.
 Sorry for that commit messages. Currently I've no other way to debugig.
 
 ## Running
-`depricated`
 You should only need configuration file while the rest will be created automatically.
 
 credentials.json file with the credentials:
