@@ -36,7 +36,7 @@ class Meta:
     @commands.command()
     async def hello(self):
         """Displays my intro message."""
-        await self.bot.say('Hello! I\'m a robot! I am currently **version 0.1**. Haitaka made me.')
+        await self.bot.say('Hello! I\'m a robot! I am currently **version 0.2**. Haitaka made me.')
 
 
     @commands.command(pass_context=True)
@@ -159,9 +159,20 @@ class Meta:
         return fmt.format(d=days, h=hours, m=minutes, s=seconds)
 
     @commands.command()
-    async def joinserver(self, invite : discord.Invite):
-        """Joins a server via invite."""
-        await self.bot.accept_invite(invite)
+    async def joinserver(self):
+        """Joins a server."""
+        msg = 'It is no longer possible to ask me to join via invite. So use this URL instead.\n\n'
+        perms = discord.Permissions.none()
+        perms.read_messages = True
+        perms.send_messages = True
+        perms.manage_roles = True
+        perms.ban_members = True
+        perms.kick_members = True
+        perms.manage_messages = True
+        perms.embed_links = True
+        perms.read_message_history = True
+        perms.attach_files = True
+        await self.bot.say(msg + discord.utils.oauth_url(self.bot.client_id, perms))
 
     @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_server=True)

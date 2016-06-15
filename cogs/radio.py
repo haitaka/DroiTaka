@@ -163,7 +163,7 @@ class Radio:
                 after=self.toggle_next_song)
             self.stopped = False
             self.player.start()
-            song_name = self.current.artist + ' ' + self.current.title
+            song_name = self.current.artist + ' - ' + self.current.title
             await self.bot.change_status(discord.Game(name=song_name))
 
             await self.play_next_song.wait()
