@@ -99,7 +99,7 @@ class Radio:
     async def leave(self, ctx):
         """Покинуть текущий голосовой канал."""
         await ctx.invoke(self.stop)
-        await self.bot.voice.disconnect()
+        await self.bot.voice_client_in(ctx.message.server).disconnect()
         await self.bot.change_status(None)
 
     @commands.command()
