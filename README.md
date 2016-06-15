@@ -1,22 +1,22 @@
 ## DroiTaka
 A personal bot that runs on Discord.
 
-Sorry for that commit messages. Currently I've no other way to debugig.
+## Features
+
+- Music playing ( from YaDisk & from Vk.com )
+- Random frection selector for Endless Legend
+- Some nice mod utilities
 
 ## Running
-`depricated`
-You should only need configuration file while the rest will be created automatically.
 
 credentials.json file with the credentials:
 
 ```json
 {
-    "login": "",
-    "passwd": "",
-    "copy_login": "",
-    "copy_passwd": "",
-    "yadisk_token": ""
-
+    "bot_token": "your bot token",
+    "client_id": "your client_id",
+    "yadisk_token": "yandex-disk token",
+    "vk_token": "vk.com tokken",
 }
 ```
 
@@ -26,3 +26,4 @@ After you do the setup required just edit the `cogs/utils/checks.py` file with y
 
 - Python 3.5+
 - Async version of discord.py (`pip install git+https://github.com/Rapptz/discord.py@async`)
+- Requests

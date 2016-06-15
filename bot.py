@@ -4,8 +4,8 @@ from cogs.utils import checks
 import datetime, re
 import json, asyncio
 import copy
+import logging
 import os, sys
-from cogs.utils.api.pycopy import Copy
 from cogs.utils.api.yadisk import YaDisk
 from cogs.utils.api.vkaudio import VkAudio
 
@@ -19,13 +19,20 @@ initial_extensions = [
     'cogs.meta',
     'cogs.rng',
     'cogs.pictures',
-    'cogs.mod',
+    #'cogs.mod',
     'cogs.radio',
-    'cogs.tags'
+    #'cogs.tags'
 ]
 
 bot = commands.Bot(command_prefix=['!'], formatter=formatter,
                    description=description, pm_help=False)
+
+discord_logger = logging.getLogger('discord')
+discord_logger.setLevel(logging.CRITICAL)
+log = logging.getLogger()
+log.setLevel(logging.INFO)
+handler = logging.FileHandler(filename='droitaka.log', encoding='utf-8', mode='w')
+log.addHandler(handler)
 
 @bot.event
 async def on_ready():
@@ -54,14 +61,15 @@ async def on_command(command, ctx):
     if message.channel.is_private:
         destination = 'Private Message'
     else:
-        channel_name = b'#' + message.channel.name.encode('utf-8')
-        server_name = message.server.name.encode('utf-8')
-        destination = '{} ({})'.format(channel_name, server_name)
+        destination = '#{0.channel.name} ({0.server.name})'.format(message)
 
-    print('{}: {} in {}: {}'.format(timestamp, author, destination, content))
+    log.info('{0.timestamp}: {0.author.name} in {1}: {0.content}'.format(message, destination))
 
 @bot.event
 async def on_message(message):
+    if message.author == bot.user:
+        return
+
     mod = bot.get_cog('Mod')
 
     if mod is not None:
@@ -135,30 +143,6 @@ async def debug(ctx, *, code : str):
 
     await bot.say(python.format(result))
 
-@bot.command(hidden=True)
-@checks.is_owner()
-async def announcement(*, message : str):
-    # we copy the list over so it doesn't change while we're iterating over it
-    servers = list(bot.servers)
-    for server in servers:
-        try:
-            await bot.send_message(server, message)
-        except discord.Forbidden:
-            # we can't send a message for some reason in this
-            # channel, so try to look for another one.
-            me = server.me
-            def predicate(ch):
-                text = ch.type == discord.ChannelType.text
-                return text and ch.permissions_for(me).send_messages
-
-            channel = discord.utils.find(predicate, server.channels)
-            if channel is not None:
-                await bot.send_messages(channel, message)
-        finally:
-            # to make sure we don't hit the rate limit, we send one
-            # announcement message every 5 seconds.
-            await asyncio.sleep(5)
-
 @bot.command(pass_context=True, hidden=True)
 async def do(ctx, times : int, *, command):
     """Repeats a command a specified number of times."""
@@ -166,7 +150,7 @@ async def do(ctx, times : int, *, command):
     msg.content = command
     for i in range(times):
         await bot.process_commands(msg)
-        
+
 @bot.command()
 async def restart():
     """Restarts the bot."""
@@ -177,13 +161,16 @@ def load_credentials():
     with open('credentials.json') as f:
         return json.load(f)
 
-#def load_yadisk_data():
-#    with open('yadisk_cred.json') as f:
-#        return json.load(f)
-
 if __name__ == '__main__':
     credentials = load_credentials()
+
+    if any('debug' in arg.lower() for arg in sys.argv):
+        bot.command_prefix = '$'
+
+    credentials = load_credentials()
+    bot.client_id = credentials['client_id']
+    #bot.statistics = CarbonStatistics(key=credentials['carbon_key'], bot=bot)
     bot.yadisk = YaDisk(credentials['yadisk_token'])
     bot.vkaudio = VkAudio(credentials['vk_token'])
-    bot.pycopy = Copy(credentials['copy_login'], credentials['copy_passwd'])
-    bot.run(credentials['login'], credentials['passwd'])
+
+    bot.run(credentials['bot_token'])

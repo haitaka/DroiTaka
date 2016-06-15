@@ -21,7 +21,7 @@ class RNG:
     def __init__(self, bot):
         self.bot = bot
         self.el_pull = copy.copy(RNG.el_fractions)
-        
+
     @commands.command()
     async def random(self, minimum=0, maximum=100):
         """Выбрать случайное число в заданном диапазоне.
@@ -53,29 +53,29 @@ class RNG:
             for i in range(length):
                 result.append(rng.choice(seq))
             return result
-            
+
     def similar(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
-        
+
     async def print_pull(self, pull):
         str_answer = ''
         for idx, fract in enumerate(pull, 1):
             str_answer += '{}. {}\n'.format(idx, fract[0])
         await self.bot.say(str_answer)
-        
+
     @commands.group(pass_context=True, aliases=['ел'])
     async def el(self, ctx, *args):
         """Выбор фракции в Endless Legend.
-        
+
         !el вывести список фракций
         !el {n} выбрать *n* случайных фракций
         !el uniq {n} выбрать *n* случайных фракций без повторений
         !el {fract} исключить *fract* из списка
         """
-        
+
         uniq = False
         isroll = False
-            
+
         for arg in args:
             if arg.strip().isdigit():
                 if int(arg) in range(1, 9):
@@ -99,10 +99,10 @@ class RNG:
                 if match in self.el_pull:
                     await self.bot.say('{} удалены из списка.'.format(match[0]))
                     self.el_pull.remove(match)
-                    
+
         if not isroll:
             await self.print_pull(self.el_pull)
-        
+
     @commands.command(aliases=['выбери', 'вибери'])
     async def choose(self, *, choices : str):
         """Есть два стула...
@@ -111,9 +111,9 @@ class RNG:
         choices_list = list()
         for choice in choices.split('or'):
             choices_list += choice.split('или')
-            
+
         if len(choices_list) < 2:
-            await self.bot.say('Шо то хуйня, шо это хуйня.')
+            await self.bot.say('Шо то фигня, шо это фигня.')
         else:
             await self.bot.say(rng.choice(choices_list).lstrip())
 
