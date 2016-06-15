@@ -1,3 +1,4 @@
+`depricated`
 ## DroiTaka
 A personal bot that runs on Discord.
 
