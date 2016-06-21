@@ -95,7 +95,7 @@ class Radio:
             await self.bot.say('Нет такого голосового канала.')
         await self.bot.join_voice_channel(channel)
 
-    @commands.command(pass_context=True, aliases=['у', 'уёбывай', 'уходи'])
+    @commands.command(pass_context=True, aliases=['у', 'уходи'])
     async def leave(self, ctx):
         """Покинуть текущий голосовой канал."""
         await ctx.invoke(self.stop)
@@ -235,6 +235,10 @@ class Radio:
         if value.strip().isdigit():
             self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + self.ya_songs[int(value.strip())-1]))
             await self.bot.say("{} - {} добавлена в конец очереди".format(self.queue[0].artist, self.queue[0].title))
+        elif value.strip().startswith('all'):
+            for song_name in self.ya_songs:
+                self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
+            await self.bot.say("Все песенки с YaDisk добавлены в очередь.")
         elif value.strip().startswith('vk '):
             for song_dict in self.bot.vkaudio.get_by_url(value.strip('vk ')):
                 self.queue.append(VkSong(song_dict))
@@ -243,8 +247,18 @@ class Radio:
             for song_name in self.playlists[value]:
                 self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
             await self.bot.say("Плейлист добавлен в конец очереди.")
+        elif value.strip() is 'all':
+            for song_name in self.ya_songs:
+                self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
+            await self.bot.say("Все песенки с YaDisk добавлены в очередь.")
         else:
             await self.bot.say("Нет такой песенки.")
+            
+    @commands.command()
+    async def clear(self):
+        """Очистить очередь воспроизведения."""
+        self.queue = deque()
+        await self.bot.say("Очередь очищена.")
 
     @commands.command()
     async def shuffle(self):
