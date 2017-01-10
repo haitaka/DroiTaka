@@ -106,6 +106,14 @@ class Meta:
         ]
 
         await formats.entry_to_code(self.bot, entries)
+        
+    @commands.command(pass_context=True)
+    async def say(self, ctx, *, text : str = "Hello!"):
+        try:
+            await self.bot.delete_message(ctx.message)
+        except:
+            await self.bot.say("Бельше прав искуственным формам жизни!!")
+        await self.bot.say(text)
 
     async def say_permissions(self, member, channel):
         permissions = channel.permissions_for(member)
