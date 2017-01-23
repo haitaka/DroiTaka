@@ -1,5 +1,9 @@
 from discord.ext import commands
 import discord.utils
+import unicodedata as ud
+
+latin_letters= {}
+
 
 def is_owner_check(ctx):
     return ctx.message.author.id == '123832273626857472'
@@ -49,3 +53,14 @@ def admin_or_permissions(**perms):
         return role_or_permissions(ctx, lambda r: r.name == 'Bot Admin', **perms)
 
     return commands.check(predicate)
+
+
+def is_latin(uchr):
+    try: return latin_letters[uchr]
+    except KeyError:
+         return latin_letters.setdefault(uchr, 'LATIN' in ud.name(uchr))
+
+def only_roman_chars(unistr):
+    return all(is_latin(uchr)
+           for uchr in unistr
+           if uchr.isalpha()) # isalpha suggested by John Machin

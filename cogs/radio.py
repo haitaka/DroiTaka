@@ -158,9 +158,10 @@ class Radio:
             self.current = self.queue.popleft()
             voice_client = self.bot.voice_client_in(ctx.message.server)
             self.player = voice_client.create_ffmpeg_player(
-                #options="-loglevel debug -report",
                 self.current.get_url(),
-                after=self.toggle_next_song)
+                after=self.toggle_next_song,
+                #options="-loglevel debug -report",
+                options="-af \"volume=0.1\" ",)
             self.stopped = False
             self.player.start()
             song_name = self.current.artist + ' - ' + self.current.title
@@ -239,18 +240,16 @@ class Radio:
             for song_name in self.ya_songs:
                 self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
             await self.bot.say("Все песенки с YaDisk добавлены в очередь.")
-        elif value.strip().startswith('vk '):
-            for song_dict in self.bot.vkaudio.get_by_url(value.strip('vk ')):
-                self.queue.append(VkSong(song_dict))
-            await self.bot.say("Плейлист Vk добавлен в конец очереди.")
+        elif value.strip().startswith('vk'):
+            await self.bot.say("VK отказался собтрудничать с нами.")
         elif value.strip() in self.playlists:
             for song_name in self.playlists[value]:
                 self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
             await self.bot.say("Плейлист добавлен в конец очереди.")
-        elif value.strip() is 'all':
-            for song_name in self.ya_songs:
-                self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
-            await self.bot.say("Все песенки с YaDisk добавлены в очередь.")
+        #elif value.strip() is 'all':
+        #    for song_name in self.ya_songs:
+        #        self.queue.append(YaSong(self.bot.yadisk, self.songs_dir + song_name))
+        #    await self.bot.say("Все песенки с YaDisk добавлены в очередь.")
         else:
             await self.bot.say("Нет такой песенки.")
             
